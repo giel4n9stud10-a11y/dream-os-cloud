@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏢 Dream OS Cloud</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+        body { background:#000; color:#FFF; font-family:sans-serif; padding:10px; }
+        .header { text-align:center; padding:15px; border-bottom:2px solid #0A0; margin-bottom:15px; }
+        .title { font-size:20px; color:#FD0; }
+        .stats { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:15px 0; }
+        .stat-card { background:#111; border-radius:10px; padding:15px; text-align:center; }
+        .stat-number { font-size:24px; color:#FD0; }
+        .btn-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:15px 0; }
+        .btn { background:#0A0; color:#FFF; border:none; padding:12px; border-radius:8px; }
+        .btn-wa { background:#25D366; }
+        .btn-admin { background:#C62828; }
+        .calendar { background:#111; border-radius:10px; padding:15px; margin-top:15px; }
+        .loading { color:#888; text-align:center; padding:10px; }
+        .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:100; padding:10px; }
+        .modal-content { background:#111; border-radius:10px; padding:15px; max-width:400px; margin:0 auto; border:1px solid #0A0; }
+        .form-group { margin:10px 0; }
+        .form-input, .form-select { width:100%; padding:10px; background:#222; border:1px solid #444; border-radius:6px; color:#FFF; }
+        .footer { margin-top:20px; text-align:center; font-size:12px; color:#888; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="title">🏢 DREAM OS CLOUD</div>
+        <div id="status" style="color:#0A0; font-size:12px; margin-top:5px;">Loading...</div>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-number" id="bookings">0</div>
+            <div>Today's Bookings</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="facilities">0</div>
+            <div>Facilities</div>
+        </div>
+    </div>
+
+    <div class="btn-grid">
+        <button class="btn" onclick="openModal('booking')">📅 Booking</button>
+        <button class="btn" onclick="openModal('calendar')">🗓️ Calendar</button>
+        <button class="btn btn-wa" onclick="wa()">📱 WhatsApp</button>
+        <button class="btn btn-admin" onclick="openAdmin()">🔐 Admin</button>
+    </div>
+
+    <div class="calendar">
+        <div style="color:#FD0; margin-bottom:10px;">📅 Next 3 Days</div>
+        <div id="calendarView" class="loading">Loading...</div>
+    </div>
+
+    <div class="footer">
+        Made for SIF Al Fikri • Optimized for Low-End HP
+    </div>
+
+    <!-- MODAL BOOKING -->
+    <div class="modal" id="modalBooking">
+        <div class="modal-content">
+            <h3>📅 New Booking</h3>
+            <div class="form-group">
+                <input type="text" class="form-input" id="name" placeholder="Nama Lengkap" required>
+            </div>
+            <div class="form-group">
+                <input type="tel" class="form-input" id="phone" placeholder="No HP (628...)" required>
+            </div>
+            <div class="form-group">
+                <select class="form-select" id="division" required>
+                    <option value="">Divisi</option>
+                    <option>SD</option><option>SMP</option><option>SMA</option><option>Umum</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <select class="form-select" id="facility" required>
+                    <option value="">Loading...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="date" class="form-input" id="date" required>
+            </div>
+            <div class="form-group">
+                <input type="time" class="form-input" id="time" required>
+            </div>
+            <button class="btn" onclick="submitBooking()">✅ Submit</button>
+            <button class="btn" style="background:#333; margin-top:8px;" onclick="closeModal('booking')">← Batal</button>
+        </div>
+    </div>
+
+    <!-- MODAL CALENDAR -->
+    <div class="modal" id="modalCalendar">
+        <div class="modal-content">
+            <h3>🗓️ 7-Day Calendar</h3>
+            <div id="fullCalendar" class="loading">Loading...</div>
+            <button class="btn" style="background:#333; margin-top:10px;" onclick="closeModal('calendar')">← Tutup</button>
+        </div>
+    </div>
+
+    <script>
+        // === CONFIG ===
+        const SUPABASE_URL = 'https://mugrsslvjaisdcexbybg.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11Z3Jzc2x2amFpc2RjZXhieWJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUwMzk4MzQsImV4cCI6MjA1MDYxNTgzNH0.74xqJXaUuYAcMmkZ3ZqY_hJIs9e-TvE1yA-zF2vZ-x4';
+        let supabase = null;
+
+        // === INIT ===
+        async function init() {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            
+            try {
+                // Test koneksi
+                await supabase.from('dream_facilities').select('count', { count: 'exact', head: true });
+                document.getElementById('status').innerHTML = '✅ Connected';
+                
+                // Load data
+                await loadFacilities();
+                await loadStats();
+                await loadCalendarPreview();
+                
+            } catch (e) {
+                document.getElementById('status').innerHTML = '❌ Offline Mode';
+                alert('❌ Tidak terhubung ke database. Cek koneksi internet.');
+            }
+        }
+
+        // === LOAD FACILITIES ===
+        async function loadFacilities() {
+            try {
+                const { data } = await supabase
+                    .from('dream_facilities')
+                    .select('id, nama_fasilitas, kode_fasilitas')
+                    .eq('status', 'available')
+                    .order('nama_fasilitas', { ascending: true });
+                
+                const sel = document.getElementById('facility');
+                sel.innerHTML = '<option value="">Pilih Fasilitas</option>';
+                data.forEach(f => {
+                    const opt = document.createElement('option');
+                    opt.value = f.id;
+                    opt.textContent = `${f.nama_fasilitas} (${f.kode_fasilitas})`;
+                    sel.appendChild(opt);
+                });
+            } catch (e) {
+                console.error('Facilities error:', e);
+            }
+        }
+
+        // === LOAD STATS ===
+        async function loadStats() {
+            const today = new Date().toISOString().split('T')[0];
+            try {
+                const [bookings, facilities] = await Promise.all([
+                    supabase.from('dream_bookings').select('*', { count: 'exact' }).eq('tanggal', today),
+                    supabase.from('dream_facilities').select('*', { count: 'exact' }).eq('status', 'available')
+                ]);
+                document.getElementById('bookings').textContent = bookings.count || 0;
+                document.getElementById('facilities').textContent = facilities.count || 0;
+            } catch (e) {
+                console.error('Stats error:', e);
+            }
+        }
+
+        // === CALENDAR PREVIEW ===
+        async function loadCalendarPreview() {
+            try {
+                const today = new Date();
+                let html = '';
+                for (let i = 0; i < 3; i++) {
+                    const d = new Date(today);
+                    d.setDate(today.getDate() + i);
+                    const dateStr = d.toISOString().split('T')[0];
+                    
+                    const { data } = await supabase
+                        .from('dream_bookings')
+                        .select('nama, waktu_mulai, f.nama_fasilitas')
+                        .eq('tanggal', dateStr)
+                        .in('status', ['menunggu', 'disetujui'])
+                        .eq('dream_bookings.id_fasilitas', 'f.id', { foreignTable: 'dream_facilities' })
+                        .order('waktu_mulai', { ascending: true });
+                    
+                    html += `<div style="margin-bottom:10px;"><strong>${d.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric' })}</strong><br>`;
+                    if (data.length === 0) {
+                        html += '<small style="color:#888;">Kosong</small>';
+                    } else {
+                        data.forEach(b => {
+                            html += `<div style="background:rgba(0,100,0,0.2); padding:3px; margin:2px 0; border-radius:3px; font-size:12px;">
+                                ${b.waktu_mulai} - ${b.f.nama_fasilitas}
+                            </div>`;
+                        });
+                    }
+                    html += '</div>';
+                }
+                document.getElementById('calendarView').innerHTML = html;
+            } catch (e) {
+                document.getElementById('calendarView').innerHTML = '<div style="color:#888;">Gagal load</div>';
+            }
+        }
+
+        // === FULL CALENDAR ===
+        async function loadFullCalendar() {
+            try {
+                const today = new Date();
+                let html = '';
+                for (let i = 0; i < 7; i++) {
+                    const d = new Date(today);
+                    d.setDate(today.getDate() + i);
+                    const dateStr = d.toISOString().split('T')[0];
+                    
+                    const { data } = await supabase
+                        .from('dream_bookings')
+                        .select('nama, waktu_mulai, f.nama_fasilitas')
+                        .eq('tanggal', dateStr)
+                        .in('status', ['menunggu', 'disetujui'])
+                        .eq('dream_bookings.id_fasilitas', 'f.id', { foreignTable: 'dream_facilities' })
+                        .order('waktu_mulai', { ascending: true });
+                    
+                    html += `<div style="margin-bottom:15px;"><strong>${d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short' })}</strong><br>`;
+                    if (data.length === 0) {
+                        html += '<div style="color:#888; padding:5px 0;">Tidak ada booking</div>';
+                    } else {
+                        data.forEach(b => {
+                            html += `<div style="background:rgba(0,100,0,0.2); padding:5px; margin:3px 0; border-radius:4px;">
+                                ${b.waktu_mulai} - ${b.f.nama_fasilitas}<br>
+                                <small>${b.nama}</small>
+                            </div>`;
+                        });
+                    }
+                    html += '</div>';
+                }
+                document.getElementById('fullCalendar').innerHTML = html;
+            } catch (e) {
+                document.getElementById('fullCalendar').innerHTML = '<div style="color:#888;">Gagal load kalender</div>';
+            }
+        }
+
+        // === SUBMIT BOOKING ===
+        async function submitBooking() {
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const division = document.getElementById('division').value;
+            const facilityId = document.getElementById('facility').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+
+            if (!name || !phone || !division || !facilityId || !date || !time) {
+                alert('❌ Harap isi semua field!');
+                return;
+            }
+
+            if (!phone.startsWith('628')) {
+                alert('❌ No HP harus diawali 628');
+                return;
+            }
+
+            // Cek double booking
+            const [h, m] = time.split(':').map(Number);
+            const start = h * 60 + m;
+            const end = start + 60; // 1 jam
+
+            const { data } = await supabase
+                .from('dream_bookings')
+                .select('waktu_mulai, durasi, no_hp_pemohon')
+                .eq('id_fasilitas', facilityId)
+                .eq('tanggal', date)
+                .in('status', ['menunggu', 'disetujui']);
+
+            let conflict = false;
+            for (const b of data) {
+                const [bh, bm] = b.waktu_mulai.split(':').map(Number);
+                const bStart = bh * 60 + bm;
+                const bEnd = bStart + (b.durasi * 60);
+                if (start < bEnd && end > bStart) {
+                    conflict = true;
+                    break;
+                }
+                if (b.no_hp_pemohon === phone) {
+                    alert('📵 Anda sudah booking hari ini!');
+                    return;
+                }
+            }
+
+            if (conflict) {
+                alert('❌ Fasilitas sudah dibooking di jam tersebut!');
+                return;
+            }
+
+            // Simpan
+            await supabase.from('dream_bookings').insert({
+                nama: name,
+                no_hp_pemohon: phone,
+                divisi: division,
+                id_fasilitas: facilityId,
+                tanggal: date,
+                waktu_mulai: time,
+                durasi: 1,
+                status: 'menunggu'
+            });
+
+            alert('✅ Booking berhasil! Menunggu persetujuan.');
+            closeModal('booking');
+            loadStats();
+            loadCalendarPreview();
+
+            // Kirim WhatsApp
+            const msg = `BOOKING BARU\nNama: ${name}\nDivisi: ${division}\nTanggal: ${date}\nJam: ${time}`;
+            window.open(`https://wa.me/628886183954?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        // === ADMIN ===
+        async function openAdmin() {
+            const pass = prompt('🔐 Password Admin:');
+            if (pass !== 'b15m1ll4h_C1nt41001') {
+                alert('❌ Password salah!');
+                return;
+            }
+
+            const { data } = await supabase
+                .from('dream_bookings')
+                .select('*, f.nama_fasilitas')
+                .eq('dream_bookings.id_fasilitas', 'f.id', { foreignTable: 'dream_facilities' })
+                .order('created_at', { ascending: false });
+
+            let html = '<h3>🔐 Admin Panel</h3>';
+            data.forEach(b => {
+                html += `
+                    <div style="border-bottom:1px solid #333; padding:8px 0;">
+                        <strong>${b.nama}</strong> (${b.divisi})<br>
+                        ${b.f.nama_fasilitas} - ${b.tanggal} ${b.waktu_mulai}<br>
+                        Status: <span style="color:${b.status==='disetujui'?'#0A0':'#FF0'}">${b.status}</span><br>
+                        <button onclick="approve(${b.id})" style="background:#0A0; color:#FFF; border:none; padding:3px 8px; border-radius:4px; margin-top:4px;">✅ Setujui</button>
+                    </div>
+                `;
+            });
+
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'block';
+            modal.innerHTML = `<div class="modal-content">${html}<button class="btn" style="background:#333; margin-top:10px;" onclick="this.parentElement.remove()">← Tutup</button></div>`;
+            document.body.appendChild(modal);
+        }
+
+        async function approve(id) {
+            await supabase.from('dream_bookings').update({ status: 'disetujui' }).eq('id', id);
+            alert('✅ Booking disetujui!');
+            document.querySelector('.modal:last-child').remove();
+            loadCalendarPreview();
+        }
+
+        // === UTILS ===
+        function openModal(id) {
+            if (id === 'booking') loadFacilities();
+            if (id === 'calendar') loadFullCalendar();
+            document.getElementById('modal' + id.charAt(0).toUpperCase() + id.slice(1)).style.display = 'block';
+        }
+
+        function closeModal(id) {
+            document.getElementById('modal' + id.charAt(0).toUpperCase() + id.slice(1)).style.display = 'none';
+        }
+
+        function wa() {
+            window.open('https://wa.me/628886183954', '_blank');
+        }
+
+        // START
+        window.onload = init;
+        window.openModal = openModal;
+        window.closeModal = closeModal;
+        window.approve = approve;
+    </script>
+</body>
+</html>
