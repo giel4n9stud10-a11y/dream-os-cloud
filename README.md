@@ -15,7 +15,6 @@ Just open `index.html` in browser!
 
 ## 📞 Support
 - WhatsApp: 628886183954
-- Admin Password: `b15m1ll4h_C1nt41001`
 
 ## 🇮🇩🇵🇸
 Made with ❤️ for Indonesia
