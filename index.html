@@ -370,5 +370,56 @@
         window.closeModal = closeModal;
         window.approve = approve;
     </script>
+
+    // Tambahin kode ini di akhir file HTML lu (sebelum </body>)
+// Ini bakal nampilin debug info langsung di layar HP
+
+// EMERGENCY DEBUG PANEL
+const debugPanel = document.createElement('div');
+debugPanel.style.cssText = `
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.9);
+    color: #0F0;
+    padding: 10px;
+    border: 2px solid #0A0;
+    border-radius: 10px;
+    z-index: 99999;
+    font-size: 12px;
+    max-height: 200px;
+    overflow-y: auto;
+`;
+debugPanel.innerHTML = '<h3>🛠️ DEBUG PANEL</h3><div id="debugLog"></div>';
+
+// Debug functions
+function debugLog(msg) {
+    const logDiv = document.getElementById('debugLog');
+    logDiv.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${msg}</div>`;
+    console.log(msg);
+}
+
+// Test saat halaman load
+window.onload = function() {
+    debugLog('🔍 Halaman loaded');
+    debugLog(`🌐 Origin: ${window.location.origin}`);
+    
+    // Test tombol WhatsApp
+    setTimeout(() => {
+        const waBtn = document.querySelector('.btn-wa');
+        if (waBtn) {
+            debugLog('✅ Tombol WhatsApp ditemukan');
+            waBtn.onclick = function() {
+                debugLog('📱 Tombol WhatsApp diklik!');
+                window.open('https://wa.me/628886183954', '_blank');
+            };
+        } else {
+            debugLog('❌ Tombol WhatsApp tidak ditemukan!');
+        }
+    }, 1000);
+};
+
+document.body.appendChild(debugPanel);
 </body>
 </html>
