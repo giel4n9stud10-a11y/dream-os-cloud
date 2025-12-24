@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🌿 Dream OS v4.1 | SIF Al Fikri</title>
+    <meta name="theme-color" content="#E8F5E9">
+    <meta name="description" content="System Administrasi SIF Al Fikri - Booking, K3, Inventaris">
+    
+    <!-- CACHE BUSTING -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="data:application/json,{'name':'Dream OS','short_name':'DreamOS','theme_color':'#E8F5E9','background_color':'#E8F5E9','display':'standalone','icons':[{'src':'https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/svg/1f33f.svg','sizes':'192x192','type':'image/svg+xml'}]}">
+    
+    <!-- ADAPTIVE ENGINE FOR SAMSUNG A51 -->
+    <script>
+    (function() {
+        'use strict';
+        const ua = navigator.userAgent;
+        const isLowEnd = /SM-A5[0-9]|SM-A[0-4][0-9]|Redmi.*[0-9][A-C]|RAM.*[0-9]/.test(ua) || 
+                        (navigator.deviceMemory && navigator.deviceMemory <= 3);
+        
+        if (isLowEnd) {
+            document.documentElement.classList.add('dream-lite');
+            const style = document.createElement('style');
+            style.textContent = `
+                .dream-lite * {
+                    animation: none !important;
+                    transition: none !important;
+                    transform: none !important;
+                }
+                .dream-lite body {
+                    font-family: -apple-system, BlinkMacSystemFont, sans-serif !important;
+                }
+                .dream-lite .menu-card,
+                .dream-lite button {
+                    min-height: 65px !important;
+                    padding: 18px !important;
+                    margin: 12px 0 !important;
+                }
+            `;
+            document.head.appendChild(style);
+            console.log('📱 Dream OS: Lite Mode activated for low-end device');
+        }
+    })();
+    </script>
+    
+    <!-- HEALING GREEN THEME -->
+    <style>
+        /* ====== VARIABLES ====== */
+        :root {
+            --hijau-super-lembut: #E8F5E9;
+            --hijau-card: #C8E6C9;
+            --hijau-border: #A5D6A7;
+            --hijau-btn: #4CAF50;
+            --hijau-dark: #2E7D32;
+            --emas: #FFD700;
+            --text: #2C3E50;
+            --merah: #D32F2F;
+            --biru: #2196F3;
+        }
+        
+        /* ====== RESET ====== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--hijau-super-lembut);
+            color: var(--text);
+            line-height: 1.5;
+            padding: 15px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* ====== HEADER SPIRITUAL ====== */
+        .spiritual-header {
+            text-align: center;
+            padding: 20px 15px;
+            margin-bottom: 25px;
+            background: rgba(200, 230, 201, 0.5);
+            border-radius: 20px;
+            border: 2px solid var(--hijau-border);
+        }
+        
+        .arabic-large {
+            font-size: 1.8rem;
+            color: var(--emas);
+            direction: rtl;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        
+        .title-main {
+            font-size: 1.8rem;
+            color: var(--hijau-dark);
+            margin: 15px 0 5px;
+        }
+        
+        .subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        /* ====== SYSTEM STATUS ====== */
+        .status-badge {
+            display: inline-block;
+            background: var(--hijau-btn);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        
+        /* ====== MENU CARDS ====== */
+        .menu-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .menu-card {
+            background: white;
+            border: 2px solid var(--hijau-border);
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .menu-card:active {
+            background: var(--hijau-card);
+            transform: scale(0.98);
+        }
+        
+        .menu-card h3 {
+            color: var(--hijau-dark);
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .menu-card p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-left: 40px;
+        }
+        
+        /* ====== FORM SECTIONS ====== */
+        .form-section {
+            display: none;
+            background: white;
+            border: 2px solid var(--hijau-border);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+        
+        .form-title {
+            color: var(--hijau-dark);
+            margin-bottom: 25px;
+            font-size: 1.4rem;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: var(--hijau-dark);
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--hijau-border);
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #F9FFF9;
+            color: var(--text);
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--hijau-btn);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+        
+        /* ====== BUTTONS ====== */
+        .btn {
+            background: var(--hijau-btn);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-wa {
+            background: #25D366;
+        }
+        
+        .btn-back {
+            background: #E0E0E0;
+            color: #333;
+            margin-top: 10px;
+        }
+        
+        /* ====== FOOTER ====== */
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            padding-top: 25px;
+            border-top: 2px solid var(--hijau-border);
+            color: #666;
+            font-size: 0.85rem;
+        }
+        
+        .dream-team {
+            color: var(--hijau-btn);
+            font-weight: bold;
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+        
+        .contact-info {
+            background: var(--hijau-card);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 0.8rem;
+        }
+        
+        /* ====== ADMIN PANEL ====== */
+        .admin-section {
+            background: rgba(245, 158, 11, 0.05);
+            border: 2px solid rgba(245, 158, 11, 0.3);
+        }
+        
+        /* ====== RESPONSIVE ====== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .menu-card {
+                padding: 18px;
+            }
+            
+            .form-section {
+                padding: 20px;
+                margin: 15px 0;
+            }
+            
+            .arabic-large {
+                font-size: 1.5rem;
+            }
+            
+            .title-main {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* ====== UTILITIES ====== */
+        .text-center { text-align: center; }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- SPIRITUAL HEADER -->
+        <div class="spiritual-header">
+            <div class="arabic-large">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+            <div class="arabic-large">اَللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا مُحَمَّدٍ</div>
+            
+            <h1 class="title-main">🌿 Dream OS v4.1</h1>
+            <div class="subtitle">SIF Al Fikri • General Affairs System</div>
+            
+            <div class="status-badge" id="systemStatus">
+                🟢 ONLINE • WhatsApp Direct
+            </div>
+        </div>
+        
+        <!-- MAIN MENU -->
+        <div class="menu-grid">
+            <!-- BOOKING -->
+            <div class="menu-card" onclick="showForm('booking')">
+                <h3><span>📅</span> Form Booking</h3>
+                <p>Booking fasilitas sekolah → langsung ke WhatsApp Pak Erwin</p>
+            </div>
+            
+            <!-- K3 -->
+            <div class="menu-card" onclick="showForm('k3')">
+                <h3><span>⚠️</span> Form K3</h3>
+                <p>Laporan kerusakan, kehilangan, emergency → ke tim terkait</p>
+            </div>
+            
+            <!-- ADMIN -->
+            <div class="menu-card" onclick="openAdminPanel()">
+                <h3><span>🔐</span> Admin Panel</h3>
+                <p>Akses inventaris & manajemen sistem (password required)</p>
+            </div>
+            
+            <!-- CALENDAR -->
+            <div class="menu-card" onclick="showCalendar()">
+                <h3><span>📆</span> Kalender 30 Hari</h3>
+                <p>Lihat ketersediaan fasilitas 30 hari ke depan</p>
+            </div>
+        </div>
+        
+        <!-- FORM SECTIONS -->
+        
+        <!-- BOOKING FORM -->
+        <div id="bookingForm" class="form-section">
+            <h3 class="form-title">📅 Form Booking Fasilitas</h3>
+            
+            <div class="form-group">
+                <label>Nama Lengkap *</label>
+                <input type="text" id="bookingNama" placeholder="Masukkan nama lengkap" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Divisi *</label>
+                <select id="bookingDivisi" required>
+                    <option value="">-- Pilih Divisi --</option>
+                    <option value="SD">SD</option>
+                    <option value="SMP">SMP</option>
+                    <option value="SMA">SMA</option>
+                    <option value="UMUM">UMUM</option>
+                    <option value="OSIS">OSIS</option>
+                    <option value="GURU">GURU</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Nomor WhatsApp *</label>
+                <input type="tel" id="bookingWA" placeholder="08123456789" pattern="[0-9]{10,13}" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Sarana yang Dipesan *</label>
+                <select id="bookingSarana" required>
+                    <option value="">-- Pilih Sarana --</option>
+                    <optgroup label="🏢 Aula & Serbaguna">
+                        <option value="Aula SMP - sound, lighting, ac, projector (include)">1. Aula SMP - sound, lighting, ac, projector (include)</option>
+                        <option value="Aula SMA - sound, projector (include)">2. Aula SMA - sound, projector (include)</option>
+                        <option value="Saung Besar - sound (include)">3. Saung Besar - sound (include)</option>
+                        <option value="Saung Kecil">4. Saung Kecil</option>
+                        <option value="Serbaguna - sound (include)">6. Serbaguna - sound (include)</option>
+                    </optgroup>
+                    <optgroup label="💻 Lab Komputer">
+                        <option value="Labkom SD">7. Labkom SD</option>
+                        <option value="Labkom SMP">8. Labkom SMP</option>
+                        <option value="Labkom SMA">9. Labkom SMA</option>
+                    </optgroup>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Tanggal *</label>
+                <input type="date" id="bookingTanggal" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Waktu Mulai * (07.30-16.00)</label>
+                <input type="time" id="bookingMulai" min="07:30" max="16:00" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Waktu Selesai * (07.30-16.00)</label>
+                <input type="time" id="bookingSelesai" min="07:30" max="16:00" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Keterangan Kegiatan *</label>
+                <textarea id="bookingKeterangan" rows="3" placeholder="Contoh: Rapat OSIS, Pelajaran TIK, Lomba..." required></textarea>
+            </div>
+            
+            <button class="btn btn-wa" onclick="submitBooking()">
+                <span>📱</span> Kirim ke WhatsApp Pak Erwin
+            </button>
+            
+            <button class="btn btn-back" onclick="showMainMenu()">
+                <span>←</span> Kembali ke Menu
+            </button>
+        </div>
+        
+        <!-- K3 FORM -->
+        <div id="k3Form" class="form-section">
+            <h3 class="form-title">⚠️ Form Laporan K3</h3>
+            
+            <div class="form-group">
+                <label>Jenis Laporan *</label>
+                <select id="k3Jenis" required>
+                    <option value="">-- Pilih Jenis --</option>
+                    <option value="Kerusakan">Kerusakan</option>
+                    <option value="Kehilangan">Kehilangan</option>
+                    <option value="Kebersihan">Kebersihan</option>
+                    <option value="Emergency">Emergency</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Lokasi Kejadian *</label>
+                <input type="text" id="k3Lokasi" placeholder="Contoh: Lab Komputer 1, Aula SMP" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Barang / Jenis Masalah *</label>
+                <input type="text" id="k3Barang" placeholder="Contoh: AC rusak, Kursi patah" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Deskripsi Detail *</label>
+                <textarea id="k3Deskripsi" rows="4" placeholder="Jelaskan secara detail apa yang terjadi..." required></textarea>
+            </div>
+            
+            <button class="btn" onclick="submitK3()">
+                <span>📤</span> Kirim Laporan K3
+            </button>
+            
+            <button class="btn btn-back" onclick="showMainMenu()">
+                <span>←</span> Kembali ke Menu
+            </button>
+        </div>
+        
+        <!-- FOOTER -->
+        <div class="footer">
+            <div class="dream-team">Dream Team • Power Soul of Shalawat</div>
+            
+            <div class="contact-info">
+                📞 0888-6183-954 (Pak Erwin)<br>
+                ✉️ teknisi@alfikri.sch.id<br>
+                ⏰ 07.30–16.00 WIB
+            </div>
+            
+            <div style="color:#888; margin-top:15px; font-size:0.75rem;">
+                Dream OS v4.1 Production • Healing Green Theme<br>
+                © 2025 SIF Al Fikri • Built with ❤️ & 🕌
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // ====================
+        // CONFIGURATION
+        // ====================
+        const CONFIG = {
+            VERSION: '4.1.0-20251224',
+            WA_PAK_ERWIN: '628886183954',
+            ADMIN_PASSWORD: 'b15m1ll4h_@dm1n_2025',
+            
+            // SUPABASE CONFIG (DISABLED BY DEFAULT)
+            USE_SUPABASE: false,
+            SUPABASE_URL: '',
+            SUPABASE_KEY: '',
+            
+            // OFFLINE QUEUE
+            QUEUE_KEY: 'dream_offline_queue',
+            DATA_KEY: 'dream_local_data'
+        };
+        
+        // ====================
+        // STATE MANAGEMENT
+        // ====================
+        let currentView = 'main';
+        let offlineQueue = [];
+        
+        // ====================
+        // INITIALIZATION
+        // ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set today's date
+            const today = new Date().toISOString().split('T')[0];
+            if (document.getElementById('bookingTanggal')) {
+                document.getElementById('bookingTanggal').value = today;
+                document.getElementById('bookingTanggal').min = today;
+            }
+            
+            // Set default time
+            if (document.getElementById('bookingMulai')) {
+                document.getElementById('bookingMulai').value = '08:00';
+                document.getElementById('bookingSelesai').value = '10:00';
+            }
+            
+            // Load offline queue
+            loadOfflineQueue();
+            
+            // Update status
+            updateSystemStatus();
+            
+            // Auto-hide address bar
+            setTimeout(() => window.scrollTo(0, 1), 100);
+            
+            console.log(`🌿 Dream OS v${CONFIG.VERSION} loaded`);
+            console.log(`📱 WhatsApp: ${CONFIG.WA_PAK_ERWIN}`);
+            console.log(`📦 Local data: ${localStorage.length} items`);
+        });
+        
+        // ====================
+        // VIEW MANAGEMENT
+        // ====================
+        function showMainMenu() {
+            document.querySelectorAll('.form-section').forEach(el => {
+                el.style.display = 'none';
+            });
+            document.querySelector('.menu-grid').style.display = 'flex';
+            currentView = 'main';
+        }
+        
+        function showForm(formId) {
+            document.querySelector('.menu-grid').style.display = 'none';
+            document.querySelectorAll('.form-section').forEach(el => {
+                el.style.display = 'none';
+            });
+            document.getElementById(formId + 'Form').style.display = 'block';
+            currentView = formId;
+            
+            // Scroll to form
+            setTimeout(() => {
+                document.getElementById(formId + 'Form').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 100);
+        }
+        
+        // ====================
+        // OFFLINE QUEUE SYSTEM
+        // ====================
+        function loadOfflineQueue() {
+            const queue = localStorage.getItem(CONFIG.QUEUE_KEY);
+            offlineQueue = queue ? JSON.parse(queue) : [];
+        }
+        
+        function saveToQueue(action, data) {
+            const queueItem = {
+                id: Date.now(),
+                action: action,
+                data: data,
+                timestamp: new Date().toISOString(),
+                status: 'pending'
+            };
+            
+            offlineQueue.push(queueItem);
+            localStorage.setItem(CONFIG.QUEUE_KEY, JSON.stringify(offlineQueue));
+            
+            console.log('📦 Added to queue:', queueItem);
+        }
+        
+        // ====================
+        // WHATSAPP FUNCTIONS
+        // ====================
+        function openWhatsApp(message) {
+            const url = `https://wa.me/${CONFIG.WA_PAK_ERWIN}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+            return url;
+        }
+        
+        // ====================
+        // BOOKING FUNCTIONS
+        // ====================
+        function submitBooking() {
+            // Collect data
+            const bookingData = {
+                nama: document.getElementById('bookingNama').value,
+                divisi: document.getElementById('bookingDivisi').value,
+                whatsapp: document.getElementById('bookingWA').value,
+                sarana: document.getElementById('bookingSarana').value,
+                tanggal: document.getElementById('bookingTanggal').value,
+                waktu_mulai: document.getElementById('bookingMulai').value,
+                waktu_selesai: document.getElementById('bookingSelesai').value,
+                keterangan: document.getElementById('bookingKeterangan').value,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Validation
+            if (!bookingData.nama || !bookingData.divisi || !bookingData.whatsapp || 
+                !bookingData.sarana || !bookingData.tanggal || !bookingData.waktu_mulai || 
+                !bookingData.waktu_selesai || !bookingData.keterangan) {
+                alert('❌ Harap isi semua field yang wajib!');
+                return;
+            }
+            
+            // Format date
+            const dateObj = new Date(bookingData.tanggal);
+            const formattedDate = dateObj.toLocaleDateString('id-ID', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+            
+            // Create WhatsApp message
+            const message = `*BOOKING FASILITAS - SIF AL FIKRI*\n\n` +
+                           `👤 Nama: ${bookingData.nama}\n` +
+                           `🏫 Divisi: ${bookingData.divisi}\n` +
+                           `📱 WhatsApp: ${bookingData.whatsapp}\n` +
+                           `🏢 Sarana: ${bookingData.sarana}\n` +
+                           `📅 Tanggal: ${formattedDate}\n` +
+                           `⏰ Waktu: ${bookingData.waktu_mulai} - ${bookingData.waktu_selesai}\n` +
+                           `📝 Keterangan: ${bookingData.keterangan}\n\n` +
+                           `_via Dream OS v${CONFIG.VERSION}_`;
+            
+            // Send to WhatsApp
+            openWhatsApp(message);
+            
+            // Save locally
+            saveLocalData('booking', bookingData);
+            
+            // Add to queue for Supabase
+            saveToQueue('booking', bookingData);
+            
+            // Reset form
+            document.getElementById('bookingNama').value = '';
+            document.getElementById('bookingWA').value = '';
+            document.getElementById('bookingKeterangan').value = '';
+            
+            // Show success
+            alert('✅ Booking berhasil! WhatsApp telah terbuka.');
+            showMainMenu();
+        }
+        
+        // ====================
+        // K3 FUNCTIONS
+        // ====================
+        function submitK3() {
+            const reportData = {
+                jenis: document.getElementById('k3Jenis').value,
+                lokasi: document.getElementById('k3Lokasi').value,
+                barang: document.getElementById('k3Barang').value,
+                deskripsi: document.getElementById('k3Deskripsi').value,
+                timestamp: new Date().toISOString()
+            };
+            
+            if (!reportData.jenis || !reportData.lokasi || !reportData.barang || !reportData.deskripsi) {
+                alert('❌ Harap isi semua field!');
+                return;
+            }
+            
+            const message = `*LAPORAN ${reportData.jenis.toUpperCase()} - SIF AL FIKRI*\n\n` +
+                           `📍 Lokasi: ${reportData.lokasi}\n` +
+                           `📦 Barang/Masalah: ${reportData.barang}\n` +
+                           `📝 Deskripsi: ${reportData.deskripsi}\n` +
+                           `🕒 Waktu: ${new Date().toLocaleString('id-ID')}\n\n` +
+                           `_via Dream OS v${CONFIG.VERSION}_`;
+            
+            openWhatsApp(message);
+            
+            saveLocalData('k3', reportData);
+            saveToQueue('k3', reportData);
+            
+            // Reset form
+            document.getElementById('k3Lokasi').value = '';
+            document.getElementById('k3Barang').value = '';
+            document.getElementById('k3Deskripsi').value = '';
+            
+            alert('✅ Laporan K3 berhasil dikirim!');
+            showMainMenu();
+        }
+        
+        // ====================
+        // ADMIN FUNCTIONS
+        // ====================
+        function openAdminPanel() {
+            const password = prompt('🔐 Password Admin:');
+            
+            if (password === CONFIG.ADMIN_PASSWORD) {
+                const bookings = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_booking`) || '[]');
+                const k3Reports = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_k3`) || '[]');
+                
+                let adminHTML = `
+                    <div class="form-section" style="display:block;">
+                        <h3 class="form-title">🔐 Admin Panel</h3>
+                        
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:25px;">
+                            <div style="background:#E3F2FD; padding:15px; border-radius:10px; text-align:center;">
+                                <div style="font-size:2rem; color:#1976D2;">${bookings.length}</div>
+                                <div style="color:#0D47A1;">Total Booking</div>
+                            </div>
+                            <div style="background:#F3E5F5; padding:15px; border-radius:10px; text-align:center;">
+                                <div style="font-size:2rem; color:#7B1FA2;">${k3Reports.length}</div>
+                                <div style="color:#4A148C;">Laporan K3</div>
+                            </div>
+                        </div>
+                        
+                        <div style="background:#FFF3E0; padding:20px; border-radius:12px; margin-bottom:20px;">
+                            <h4 style="color:#F57C00; margin-bottom:15px;">📊 Quick Actions</h4>
+                            <button class="btn" onclick="exportData('booking')" style="margin-bottom:10px;">Export Booking CSV</button>
+                            <button class="btn" onclick="exportData('k3')" style="margin-bottom:10px;">Export K3 CSV</button>
+                            <button class="btn" onclick="clearAllData()" style="background:#D32F2F;">Clear All Data</button>
+                        </div>
+                        
+                        <button class="btn btn-back" onclick="showMainMenu()">
+                            ← Kembali ke Menu
+                        </button>
+                    </div>
+                `;
+                
+                // Create or update admin panel
+                if (!document.getElementById('adminPanel')) {
+                    const adminPanel = document.createElement('div');
+                    adminPanel.id = 'adminPanel';
+                    adminPanel.className = 'form-section';
+                    document.querySelector('.container').appendChild(adminPanel);
+                }
+                
+                document.getElementById('adminPanel').innerHTML = adminHTML;
+                document.getElementById('adminPanel').style.display = 'block';
+                document.querySelector('.menu-grid').style.display = 'none';
+                
+                currentView = 'admin';
+                
+            } else if (password !== null) {
+                alert('❌ Password salah!');
+            }
+        }
+        
+        // ====================
+        // UTILITY FUNCTIONS
+        // ====================
+        function saveLocalData(type, data) {
+            const key = `${CONFIG.DATA_KEY}_${type}`;
+            let existing = JSON.parse(localStorage.getItem(key) || '[]');
+            existing.push(data);
+            localStorage.setItem(key, JSON.stringify(existing));
+        }
+        
+        function updateSystemStatus() {
+            const statusEl = document.getElementById('systemStatus');
+            const isOnline = navigator.onLine;
+            
+            if (isOnline) {
+                statusEl.innerHTML = '🟢 ONLINE • WhatsApp Direct';
+                statusEl.style.background = CONFIG.USE_SUPABASE ? '#4CAF50' : '#2196F3';
+            } else {
+                statusEl.innerHTML = '🔴 OFFLINE • Local Mode';
+                statusEl.style.background = '#D32F2F';
+            }
+        }
+        
+        function showCalendar() {
+            const bookings = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_booking`) || '[]');
+            const today = new Date();
+            
+            let calendarText = '📅 KALENDER 30 HARI\n\n';
+            
+            for (let i = 0; i < 30; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                const dateStr = date.toISOString().split('T')[0];
+                
+                const dayBookings = bookings.filter(b => b.tanggal === dateStr);
+                if (dayBookings.length > 0) {
+                    const dayName = date.toLocaleDateString('id-ID', { weekday: 'short' });
+                    calendarText += `${dayName}, ${date.getDate()}/${date.getMonth()+1}: ${dayBookings.length} booking\n`;
+                }
+            }
+            
+            if (calendarText === '📅 KALENDER 30 HARI\n\n') {
+                calendarText += 'Belum ada booking dalam 30 hari ke depan.';
+            }
+            
+            alert(calendarText);
+        }
+        
+        function exportData(type) {
+            const data = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_${type}`) || '[]');
+            
+            if (data.length === 0) {
+                alert(`❌ Tidak ada data ${type} untuk diexport.`);
+                return;
+            }
+            
+            let csv = '';
+            
+            if (type === 'booking') {
+                csv = 'Nama,Divisi,WhatsApp,Sarana,Tanggal,Waktu Mulai,Waktu Selesai,Keterangan\n';
+                data.forEach(item => {
+                    csv += `"${item.nama}","${item.divisi}","${item.whatsapp}","${item.sarana}","${item.tanggal}","${item.waktu_mulai}","${item.waktu_selesai}","${item.keterangan}"\n`;
+                });
+            } else if (type === 'k3') {
+                csv = 'Jenis,Lokasi,Barang,Deskripsi,Tanggal\n';
+                data.forEach(item => {
+                    const date = new Date(item.timestamp).toLocaleDateString('id-ID');
+                    csv += `"${item.jenis}","${item.lokasi}","${item.barang}","${item.deskripsi}","${date}"\n`;
+                });
+            }
+            
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dream-os-${type}-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            
+            URL.revokeObjectURL(url);
+            
+            alert(`✅ ${data.length} data ${type} berhasil diexport!`);
+        }
+        
+        function clearAllData() {
+            if (confirm('Hapus SEMUA data booking dan K3?')) {
+                localStorage.clear();
+                alert('✅ Semua data telah dihapus.');
+                openAdminPanel(); // Refresh view
+            }
+        }
+        
+        // ====================
+        // NETWORK DETECTION
+        // ====================
+        window.addEventListener('online', () => {
+            updateSystemStatus();
+            console.log('✅ Internet connected');
+        });
+        
+        window.addEventListener('offline', () => {
+            updateSystemStatus();
+            console.log('⚠️ Internet disconnected');
+        });
+        
+        // ====================
+        // PWA INSTALL PROMPT
+        // ====================
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button after 10 seconds
+            setTimeout(() => {
+                if (deferredPrompt && confirm('Mau install Dream OS sebagai App di homescreen?')) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User installed the app');
+                            localStorage.setItem('pwa_installed', 'true');
+                        }
+                        deferredPrompt = null;
+                    });
+                }
+            }, 10000);
+        });
+    </script>
+</body>
+</html>
