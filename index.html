@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>📱 Dream OS KaiOS | SIF Al Fikri</title>
+    <meta name="theme-color" content="#006400">
+    
+    <!-- ICON UNTUK ADD TO HOME SCREEN -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏢</text></svg>">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #000;
+            color: #FFF;
+            padding: 12px;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+        .header {
+            text-align: center;
+            padding: 12px 0;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #0A0;
+        }
+        .lafadz {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 8px 0;
+        }
+        .arabic {
+            font-size: 1.8rem;
+            color: #FFD700;
+            direction: rtl;
+        }
+        .title {
+            font-size: 1.6rem;
+            color: #FFD700;
+            margin: 8px 0;
+        }
+        .subtitle {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        .card {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 10px 0;
+            text-align: center;
+            cursor: pointer;
+            transition: none;
+        }
+        .card:active {
+            background: #222;
+        }
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: #FFD700;
+        }
+        .btn {
+            background: #0A0;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            width: 100%;
+            margin: 12px 0;
+            cursor: pointer;
+            min-height: 60px;
+        }
+        .btn-wa {
+            background: #25D366;
+        }
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #888;
+        }
+        .team {
+            background: rgba(0,100,0,0.1);
+            padding: 12px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 3px solid #FFD700;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER SPIRITUAL -->
+    <div class="header">
+        <div class="lafadz">
+            <div class="arabic">مُحَمَّدٌ</div>
+            <div>❤️</div>
+            <div class="arabic">ﷲ</div>
+        </div>
+        <div class="arabic" style="font-size:1.4rem; margin:8px 0;">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+        <div class="arabic" style="font-size:1.1rem; color:#FFA500;">اَللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا مُحَمَّدٍ</div>
+        <div class="title">🏢 DREAM OS KAIOS</div>
+        <div class="subtitle">SIF Al Fikri • General Affairs System</div>
+    </div>
+
+    <!-- TRIBUTE -->
+    <div class="team">
+        <strong>🏆 Honoring Our Leaders</strong><br>
+        • Mr. Hanung Budianto, S.E. (Head of General Affairs)<br>
+        • Mr. Erwin Syah (Coordinator)
+    </div>
+
+    <!-- MAIN MENU -->
+    <div class="card" onclick="wa('Halo Pak Erwin, saya ingin booking fasilitas. Mohon bantuannya.')">
+        <h3>📅 Form Booking</h3>
+        <p>Kirim permintaan booking ke Pak Erwin</p>
+    </div>
+
+    <div class="card" onclick="wa('Laporan K3: [Jenis] - [Lokasi] - [Deskripsi]. Terima kasih.')">
+        <h3>⚠️ Laporan K3</h3>
+        <p>Kerusakan, kehilangan, atau kejadian darurat</p>
+    </div>
+
+    <div class="card" onclick="wa('Mohon bantuan untuk membatalkan booking: [Nama] - [Tanggal] - [Fasilitas].')">
+        <h3>❌ Batalkan Booking</h3>
+        <p>Permintaan pembatalan ke Pak Erwin</p>
+    </div>
+
+    <!-- WHASTAPP DIRECT -->
+    <button class="btn btn-wa" onclick="wa('Assalamualaikum Pak Erwin, saya butuh bantuan terkait Dream OS.')">
+        📱 WhatsApp Pak Erwin
+    </button>
+
+    <div class="footer">
+        📞 0888-6183-954 • 07.30–16.00 WIB<br>
+        <strong>Dream OS KaiOS v1.0</strong><br>
+        Optimized for Samsung A15/A51 & Low-End HP
+    </div>
+
+    <script>
+        function wa(msg) {
+            const phone = '628886183954';
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+            window.open(url, '_blank');
+        }
+
+        // Auto-hide address bar
+        window.scrollTo(0, 1);
+    </script>
+</body>
+</html>
