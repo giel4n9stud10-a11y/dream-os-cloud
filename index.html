@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🌿 Dream OS v4.3 | SIF Al Fikri</title>
+    <meta name="theme-color" content="#E8F5E9">
+    <meta name="description" content="System Administrasi SIF Al Fikri - Cloud Powered">
+    
+    <!-- CACHE BUSTING -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="data:application/json,{'name':'Dream OS','short_name':'DreamOS','theme_color':'#E8F5E9','background_color':'#E8F5E9','display':'standalone','icons':[{'src':'https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/svg/1f33f.svg','sizes':'192x192','type':'image/svg+xml'}]}">
+    
+    <!-- SUPABASE CLIENT -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    
+    <!-- ADAPTIVE ENGINE FOR SAMSUNG A51 -->
+    <script>
+    (function() {
+        'use strict';
+        const ua = navigator.userAgent;
+        const isLowEnd = /SM-A5[0-9]|SM-A[0-4][0-9]|Redmi.*[0-9][A-C]|RAM.*[0-9]/.test(ua) || 
+                        (navigator.deviceMemory && navigator.deviceMemory <= 3);
+        
+        if (isLowEnd) {
+            document.documentElement.classList.add('dream-lite');
+            const style = document.createElement('style');
+            style.textContent = `
+                .dream-lite * {
+                    animation: none !important;
+                    transition: none !important;
+                    transform: none !important;
+                }
+                .dream-lite body {
+                    font-family: -apple-system, BlinkMacSystemFont, sans-serif !important;
+                }
+                .dream-lite .menu-card,
+                .dream-lite button {
+                    min-height: 65px !important;
+                    padding: 18px !important;
+                    margin: 12px 0 !important;
+                }
+            `;
+            document.head.appendChild(style);
+            console.log('📱 Dream OS: Lite Mode activated for low-end device');
+        }
+    })();
+    </script>
+    
+    <!-- HEALING GREEN THEME -->
+    <style>
+        /* ====== VARIABLES ====== */
+        :root {
+            --hijau-super-lembut: #F0F9F0;
+            --hijau-card: #E3F2E3;
+            --hijau-border: #A5D6A7;
+            --hijau-btn: #4CAF50;
+            --hijau-dark: #2E7D32;
+            --emas: #FFD700;
+            --text: #2C3E50;
+            --merah: #D32F2F;
+            --biru: #2196F3;
+            --kuning: #FF9800;
+            --ungu: #9C27B0;
+        }
+        
+        /* ====== RESET ====== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--hijau-super-lembut);
+            color: var(--text);
+            line-height: 1.5;
+            padding: 15px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* ====== HEADER SPIRITUAL ====== */
+        .spiritual-header {
+            text-align: center;
+            padding: 20px 15px;
+            margin-bottom: 25px;
+            background: rgba(200, 230, 201, 0.5);
+            border-radius: 20px;
+            border: 2px solid var(--hijau-border);
+        }
+        
+        .arabic-large {
+            font-size: 1.8rem;
+            color: var(--emas);
+            direction: rtl;
+            margin: 10px 0;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .title-main {
+            font-size: 1.8rem;
+            color: var(--hijau-dark);
+            margin: 15px 0 5px;
+        }
+        
+        .subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        /* ====== SYSTEM STATUS ====== */
+        .status-badge {
+            display: inline-block;
+            background: var(--hijau-btn);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 10px 0;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .status-badge.cloud {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .status-badge.offline {
+            background: var(--merah);
+        }
+        
+        /* ====== MENU CARDS ====== */
+        .menu-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .menu-card {
+            background: white;
+            border: 2px solid var(--hijau-border);
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .menu-card:active {
+            background: var(--hijau-card);
+            transform: scale(0.98);
+        }
+        
+        .menu-card h3 {
+            color: var(--hijau-dark);
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .menu-card p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-left: 40px;
+        }
+        
+        /* ====== FORM SECTIONS ====== */
+        .form-section {
+            display: none;
+            background: white;
+            border: 2px solid var(--hijau-border);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+        
+        .form-title {
+            color: var(--hijau-dark);
+            margin-bottom: 25px;
+            font-size: 1.4rem;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: var(--hijau-dark);
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea,
+        .form-group .file-input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--hijau-border);
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #F9FFF9;
+            color: var(--text);
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--hijau-btn);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+        
+        /* ====== BUTTONS ====== */
+        .btn {
+            background: var(--hijau-btn);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-wa {
+            background: #25D366;
+        }
+        
+        .btn-back {
+            background: #E0E0E0;
+            color: #333;
+            margin-top: 10px;
+        }
+        
+        .btn-photo {
+            background: linear-gradient(135deg, #FF9800, #FF5722);
+            margin-bottom: 10px;
+        }
+        
+        .btn-cloud {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        /* ====== FOOTER ====== */
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            padding-top: 25px;
+            border-top: 2px solid var(--hijau-border);
+            color: #666;
+            font-size: 0.85rem;
+        }
+        
+        .dream-team {
+            color: var(--hijau-btn);
+            font-weight: bold;
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+        
+        .contact-info {
+            background: var(--hijau-card);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 0.8rem;
+        }
+        
+        /* ====== ROUTING INFO ====== */
+        .routing-info {
+            background: #FFF3E0;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--kuning);
+            font-size: 0.9rem;
+        }
+        
+        .routing-info strong {
+            color: var(--hijau-dark);
+        }
+        
+        /* ====== CLOUD STATUS ====== */
+        .cloud-status {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 5px 0;
+            display: inline-block;
+        }
+        
+        /* ====== RESPONSIVE ====== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .menu-card {
+                padding: 18px;
+            }
+            
+            .form-section {
+                padding: 20px;
+                margin: 15px 0;
+            }
+            
+            .arabic-large {
+                font-size: 1.5rem;
+            }
+            
+            .title-main {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* ====== UTILITIES ====== */
+        .text-center { text-align: center; }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+        .hidden { display: none; }
+        .flex { display: flex; }
+        .justify-between { justify-content: space-between; }
+        .items-center { align-items: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- SPIRITUAL HEADER -->
+        <div class="spiritual-header">
+            <div class="arabic-large">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+            <div class="arabic-large">اَللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا مُحَمَّدٍ</div>
+            
+            <h1 class="title-main">🌿 Dream OS v4.3</h1>
+            <div class="subtitle">SIF Al Fikri • Cloud-Powered System</div>
+            
+            <div id="systemStatus" class="status-badge cloud">
+                ☁️ SUPABASE SYNC • ONLINE
+            </div>
+            
+            <div id="syncStatus" class="cloud-status">
+                🔄 Syncing to cloud...
+            </div>
+        </div>
+        
+        <!-- MAIN MENU -->
+        <div class="menu-grid">
+            <!-- BOOKING -->
+            <div class="menu-card" onclick="showForm('booking')">
+                <h3><span>📅</span> Form Booking</h3>
+                <p>Booking fasilitas → WhatsApp Pak Erwin + Cloud Sync</p>
+            </div>
+            
+            <!-- K3 -->
+            <div class="menu-card" onclick="showForm('k3')">
+                <h3><span>⚠️</span> Form K3</h3>
+                <p>Laporan → Auto-Routing + Foto + Cloud Backup</p>
+            </div>
+            
+            <!-- ADMIN -->
+            <div class="menu-card" onclick="openAdminPanel()">
+                <h3><span>🔐</span> Admin Panel</h3>
+                <p>Akses data cloud, export, monitoring real-time</p>
+            </div>
+            
+            <!-- SYNC STATUS -->
+            <div class="menu-card" onclick="showSyncStatus()">
+                <h3><span>☁️</span> Cloud Status</h3>
+                <p>Cek koneksi Supabase & data tersimpan di cloud</p>
+            </div>
+        </div>
+        
+        <!-- FORM SECTIONS -->
+        
+        <!-- BOOKING FORM -->
+        <div id="bookingForm" class="form-section">
+            <h3 class="form-title">📅 Form Booking Fasilitas</h3>
+            <div class="cloud-status mb-20">✅ Data akan otomatis sync ke cloud</div>
+            
+            <div class="form-group">
+                <label>Nama Lengkap *</label>
+                <input type="text" id="bookingNama" placeholder="Masukkan nama lengkap" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Divisi *</label>
+                <select id="bookingDivisi" required>
+                    <option value="">-- Pilih Divisi --</option>
+                    <option value="SD">SD</option>
+                    <option value="SMP">SMP</option>
+                    <option value="SMA">SMA</option>
+                    <option value="UMUM">UMUM</option>
+                    <option value="OSIS">OSIS</option>
+                    <option value="GURU">GURU</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Nomor WhatsApp *</label>
+                <input type="tel" id="bookingWA" placeholder="08123456789" pattern="[0-9]{10,13}" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Sarana yang Dipesan *</label>
+                <select id="bookingSarana" required>
+                    <option value="">-- Pilih Sarana --</option>
+                    <optgroup label="🏢 Aula & Serbaguna">
+                        <option value="Aula SMP - sound, lighting, ac, projector (include)">1. Aula SMP - sound, lighting, ac, projector (include)</option>
+                        <option value="Aula SMA - sound, projector (include)">2. Aula SMA - sound, projector (include)</option>
+                        <option value="Saung Besar - sound (include)">3. Saung Besar - sound (include)</option>
+                        <option value="Saung Kecil">4. Saung Kecil</option>
+                        <option value="Serbaguna - sound (include)">6. Serbaguna - sound (include)</option>
+                    </optgroup>
+                    <optgroup label="💻 Lab Komputer">
+                        <option value="Labkom SD">7. Labkom SD</option>
+                        <option value="Labkom SMP">8. Labkom SMP</option>
+                        <option value="Labkom SMA">9. Labkom SMA</option>
+                    </optgroup>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Tanggal *</label>
+                <input type="date" id="bookingTanggal" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Waktu Mulai * (07.30-16.00)</label>
+                <input type="time" id="bookingMulai" min="07:30" max="16:00" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Waktu Selesai * (07.30-16.00)</label>
+                <input type="time" id="bookingSelesai" min="07:30" max="16:00" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Keterangan Kegiatan *</label>
+                <textarea id="bookingKeterangan" rows="3" placeholder="Contoh: Rapat OSIS, Pelajaran TIK, Lomba..." required></textarea>
+            </div>
+            
+            <button class="btn btn-wa" onclick="submitBooking()">
+                <span>📱</span> Kirim ke WhatsApp + Cloud Sync
+            </button>
+            
+            <button class="btn btn-back" onclick="showMainMenu()">
+                <span>←</span> Kembali ke Menu
+            </button>
+        </div>
+        
+        <!-- K3 FORM -->
+        <div id="k3Form" class="form-section">
+            <h3 class="form-title">⚠️ Form Laporan K3</h3>
+            <div class="cloud-status mb-20">📸 Foto + Auto-Routing + Cloud Backup</div>
+            
+            <div class="form-group">
+                <label>Jenis Laporan *</label>
+                <select id="k3Jenis" required onchange="updateK3Routing()">
+                    <option value="">-- Pilih Jenis --</option>
+                    <option value="Kerusakan">🔧 Kerusakan (ke Maintenance)</option>
+                    <option value="Kehilangan">👮 Kehilangan (ke Security)</option>
+                    <option value="Kebersihan">🧹 Kebersihan (ke Cleaning Service)</option>
+                    <option value="Emergency">🚨 Emergency (ke Maintenance)</option>
+                </select>
+            </div>
+            
+            <div id="k3RoutingInfo" class="routing-info hidden">
+                <span id="routingText"></span>
+            </div>
+            
+            <div class="form-group">
+                <label>Lokasi Kejadian *</label>
+                <input type="text" id="k3Lokasi" placeholder="Contoh: Lab Komputer 1, Aula SMP" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Barang / Jenis Masalah *</label>
+                <input type="text" id="k3Barang" placeholder="Contoh: AC rusak, Kursi patah, HP hilang" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Deskripsi Detail *</label>
+                <textarea id="k3Deskripsi" rows="4" placeholder="Jelaskan secara detail apa yang terjadi..." required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Upload Foto (opsional - sangat direkomendasikan)</label>
+                <input type="file" id="k3Foto" accept="image/*" capture="environment" class="file-input">
+                <small style="color:#666; display:block; margin-top:5px;">📸 Foto membantu tim lebih cepat memahami masalah</small>
+            </div>
+            
+            <button class="btn btn-photo" onclick="takePhoto()">
+                <span>📷</span> Ambil Foto Sekarang
+            </button>
+            
+            <button class="btn" onclick="submitK3()">
+                <span>📤</span> Kirim Laporan K3 + Cloud Sync
+            </button>
+            
+            <button class="btn btn-back" onclick="showMainMenu()">
+                <span>←</span> Kembali ke Menu
+            </button>
+        </div>
+        
+        <!-- FOOTER -->
+        <div class="footer">
+            <div class="dream-team">Dream Team • Power Soul of Shalawat 🇲🇨🇵🇸</div>
+            
+            <div class="contact-info">
+                ☁️ <strong>Supabase Cloud Active</strong><br>
+                📞 0888-6183-954 (Pak Erwin - Maintenance)<br>
+                📞 0812-3456-789 (Security - Kehilangan)<br>
+                📞 0898-7654-321 (Cleaning Service)<br>
+                ✉️ teknisi@alfikri.sch.id<br>
+                ⏰ 07.30–16.00 WIB
+            </div>
+            
+            <div style="color:#888; margin-top:15px; font-size:0.75rem;">
+                Dream OS v4.3 • Supabase Cloud Powered<br>
+                © 2025 SIF Al Fikri • Built with ❤️ & 🕌
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // ====================
+        // CONFIGURATION
+        // ====================
+        const CONFIG = {
+            VERSION: '4.3.0-20251224',
+            WA_PAK_ERWIN: '628886183954',
+            ADMIN_PASSWORD: 'b15m1ll4h_@dm1n_2025',
+            
+            // ✅ SUPABASE ENABLED!
+            USE_SUPABASE: true,
+            SUPABASE_URL: 'https://mugrsslvjaisdcexbybg.supabase.co',
+            SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11Z3Jzc2x2amFpc2RjZXhieWJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0MTMxMjAsImV4cCI6MjA4MTk4OTEyMH0.l2IszYilO0XgG7ut3HYAx6wCChsvJBj6FFlizngVoek',
+            
+            // K3 ROUTING CONFIG
+            K3_ROUTING: {
+                'Kerusakan': {
+                    wa: '628886183954',
+                    team: 'Maintenance (Pak Erwin)',
+                    icon: '🔧',
+                    color: '#2196F3'
+                },
+                'Kehilangan': {
+                    wa: '628123456789',
+                    team: 'Security',
+                    icon: '👮',
+                    color: '#FF9800'
+                },
+                'Kebersihan': {
+                    wa: '628987654321',
+                    team: 'Cleaning Service',
+                    icon: '🧹',
+                    color: '#4CAF50'
+                },
+                'Emergency': {
+                    wa: '628886183954',
+                    team: 'Maintenance (Emergency)',
+                    icon: '🚨',
+                    color: '#D32F2F'
+                }
+            },
+            
+            // OFFLINE QUEUE
+            QUEUE_KEY: 'dream_offline_queue',
+            DATA_KEY: 'dream_local_data'
+        };
+        
+        // ====================
+        // GLOBAL VARIABLES
+        // ====================
+        let currentView = 'main';
+        let offlineQueue = [];
+        let supabaseClient = null;
+        let deviceId = null;
+        
+        // ====================
+        // SUPABASE INITIALIZATION
+        // ====================
+        function initSupabase() {
+            if (!CONFIG.USE_SUPABASE) {
+                console.log('⚠️ Supabase disabled in config');
+                return;
+            }
+            
+            try {
+                supabaseClient = window.supabase.createClient(
+                    CONFIG.SUPABASE_URL,
+                    CONFIG.SUPABASE_KEY
+                );
+                
+                console.log('✅ Supabase client initialized');
+                updateSyncStatus('connected', 'Terhubung ke cloud');
+                
+                // Test connection
+                testSupabaseConnection();
+                
+            } catch (error) {
+                console.error('❌ Supabase init failed:', error);
+                updateSyncStatus('error', 'Gagal connect ke cloud');
+                CONFIG.USE_SUPABASE = false;
+            }
+        }
+        
+        async function testSupabaseConnection() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('bookings')
+                    .select('count', { count: 'exact', head: true });
+                
+                if (error) throw error;
+                
+                console.log('✅ Supabase connection test passed');
+                updateSyncStatus('synced', 'Cloud sync aktif');
+                
+            } catch (error) {
+                console.error('❌ Supabase test failed:', error);
+                updateSyncStatus('error', 'Cloud sync error');
+            }
+        }
+        
+        // ====================
+        // SYNC FUNCTIONS
+        // ====================
+        async function syncToSupabase(table, data) {
+            if (!CONFIG.USE_SUPABASE || !supabaseClient) {
+                console.log('📦 Saved to offline queue');
+                saveToQueue(table, data);
+                return false;
+            }
+            
+            updateSyncStatus('syncing', 'Menyimpan ke cloud...');
+            
+            try {
+                const supabaseData = {
+                    ...data,
+                    device_id: deviceId,
+                    sync_status: 'synced',
+                    created_at: new Date().toISOString()
+                };
+                
+                const { data: result, error } = await supabaseClient
+                    .from(table)
+                    .insert([supabaseData]);
+                
+                if (error) throw error;
+                
+                console.log(`✅ Synced to Supabase ${table}:`, data.id || data.timestamp);
+                updateSyncStatus('synced', 'Data tersimpan di cloud ✅');
+                
+                // Remove from queue if exists
+                removeFromQueue(data);
+                
+                return true;
+                
+            } catch (error) {
+                console.error(`❌ Supabase sync failed:`, error);
+                updateSyncStatus('error', 'Gagal sync, disimpan lokal');
+                
+                // Save to offline queue
+                saveToQueue(table, data);
+                return false;
+            }
+        }
+        
+        async function processOfflineQueue() {
+            if (offlineQueue.length === 0) {
+                console.log('✅ No offline items to sync');
+                return { success: 0, failed: 0 };
+            }
+            
+            console.log(`🔄 Processing ${offlineQueue.length} offline items`);
+            updateSyncStatus('syncing', `Sync ${offlineQueue.length} data...`);
+            
+            let successCount = 0;
+            let failedCount = 0;
+            
+            for (let i = 0; i < offlineQueue.length; i++) {
+                const item = offlineQueue[i];
+                
+                try {
+                    const success = await syncToSupabase(item.action, item.data);
+                    
+                    if (success) {
+                        successCount++;
+                    } else {
+                        failedCount++;
+                    }
+                    
+                    // Small delay to avoid rate limiting
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    
+                } catch (error) {
+                    console.error('Queue item sync error:', error);
+                    failedCount++;
+                }
+            }
+            
+            // Update queue
+            offlineQueue = offlineQueue.filter(item => item.status !== 'synced');
+            localStorage.setItem(CONFIG.QUEUE_KEY, JSON.stringify(offlineQueue));
+            
+            if (successCount > 0) {
+                showToast(`✅ ${successCount} data berhasil sync ke cloud`);
+            }
+            
+            updateSyncStatus('synced', `Cloud sync selesai: ${successCount} berhasil`);
+            return { success: successCount, failed: failedCount };
+        }
+        
+        // ====================
+        // QUEUE MANAGEMENT
+        // ====================
+        function loadOfflineQueue() {
+            const queue = localStorage.getItem(CONFIG.QUEUE_KEY);
+            offlineQueue = queue ? JSON.parse(queue) : [];
+            console.log(`📦 Offline queue loaded: ${offlineQueue.length} items`);
+        }
+        
+        function saveToQueue(action, data) {
+            const queueItem = {
+                id: Date.now() + Math.random(),
+                action: action,
+                data: data,
+                timestamp: new Date().toISOString(),
+                status: 'pending'
+            };
+            
+            offlineQueue.push(queueItem);
+            localStorage.setItem(CONFIG.QUEUE_KEY, JSON.stringify(offlineQueue));
+            
+            console.log('📦 Added to queue:', queueItem);
+            return queueItem.id;
+        }
+        
+        function removeFromQueue(data) {
+            const initialLength = offlineQueue.length;
+            offlineQueue = offlineQueue.filter(item => 
+                !(item.data.timestamp === data.timestamp && 
+                  item.action === (data.jenis ? 'k3_reports' : 'bookings'))
+            );
+            
+            if (offlineQueue.length < initialLength) {
+                localStorage.setItem(CONFIG.QUEUE_KEY, JSON.stringify(offlineQueue));
+                console.log('✅ Removed from queue');
+            }
+        }
+        
+        // ====================
+        // INITIALIZATION
+        // ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Generate device ID
+            deviceId = 'device_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            console.log(`📱 Device ID: ${deviceId}`);
+            
+            // Set today's date
+            const today = new Date().toISOString().split('T')[0];
+            if (document.getElementById('bookingTanggal')) {
+                document.getElementById('bookingTanggal').value = today;
+                document.getElementById('bookingTanggal').min = today;
+            }
+            
+            // Set default time
+            if (document.getElementById('bookingMulai')) {
+                document.getElementById('bookingMulai').value = '08:00';
+                document.getElementById('bookingSelesai').value = '10:00';
+            }
+            
+            // Load offline queue
+            loadOfflineQueue();
+            
+            // Initialize Supabase
+            initSupabase();
+            
+            // Update UI
+            updateSystemStatus();
+            updateSyncStatus('checking', 'Mengecek koneksi...');
+            
+            // Auto-hide address bar
+            setTimeout(() => window.scrollTo(0, 1), 100);
+            
+            // Fix title
+            document.querySelector('.title-main').innerHTML = 
+                '🌿 Dream OS v4.3<br><small style="font-size:0.8rem;">SIF Al Fikri • Cloud-Powered</small>';
+            
+            console.log(`🌿 Dream OS v${CONFIG.VERSION} loaded`);
+            console.log(`📱 WhatsApp: ${CONFIG.WA_PAK_ERWIN}`);
+            console.log(`☁️ Supabase: ${CONFIG.USE_SUPABASE ? 'Enabled' : 'Disabled'}`);
+            
+            // Auto-sync after 5 seconds
+            setTimeout(async () => {
+                if (offlineQueue.length > 0 && navigator.onLine) {
+                    await processOfflineQueue();
+                }
+            }, 5000);
+        });
+        
+        // ====================
+        // VIEW MANAGEMENT
+        // ====================
+        function showMainMenu() {
+            document.querySelectorAll('.form-section').forEach(el => {
+                el.style.display = 'none';
+            });
+            document.querySelector('.menu-grid').style.display = 'flex';
+            currentView = 'main';
+        }
+        
+        function showForm(formId) {
+            document.querySelector('.menu-grid').style.display = 'none';
+            document.querySelectorAll('.form-section').forEach(el => {
+                el.style.display = 'none';
+            });
+            document.getElementById(formId + 'Form').style.display = 'block';
+            currentView = formId;
+            
+            // Reset routing info untuk K3
+            if (formId === 'k3') {
+                document.getElementById('k3RoutingInfo').classList.add('hidden');
+            }
+            
+            // Scroll to form
+            setTimeout(() => {
+                document.getElementById(formId + 'Form').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 100);
+        }
+        
+        function showSyncStatus() {
+            let statusHTML = `
+                <div class="form-section" style="display:block;">
+                    <h3 class="form-title">☁️ Cloud Sync Status</h3>
+                    
+                    <div style="background:#E3F2FD; padding:20px; border-radius:12px; margin-bottom:20px;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                            <span>🆔 Device ID:</span>
+                            <strong>${deviceId}</strong>
+                        </div>
+                        
+                        <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                            <span>🌐 Internet:</span>
+                            <strong style="color:${navigator.onLine ? '#4CAF50' : '#D32F2F'}">
+                                ${navigator.onLine ? 'ONLINE' : 'OFFLINE'}
+                            </strong>
+                        </div>
+                        
+                        <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                            <span>☁️ Supabase:</span>
+                            <strong style="color:${CONFIG.USE_SUPABASE ? '#4CAF50' : '#D32F2F'}">
+                                ${CONFIG.USE_SUPABASE ? 'CONNECTED' : 'DISABLED'}
+                            </strong>
+                        </div>
+                        
+                        <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                            <span>📦 Offline Queue:</span>
+                            <strong style="color:${offlineQueue.length > 0 ? '#FF9800' : '#4CAF50'}">
+                                ${offlineQueue.length} items
+                            </strong>
+                        </div>
+                    </div>
+                    
+                    ${offlineQueue.length > 0 ? `
+                    <div style="background:#FFF3E0; padding:15px; border-radius:12px; margin-bottom:20px;">
+                        <h4 style="color:#F57C00; margin-bottom:10px;">🔄 Pending Sync (${offlineQueue.length})</h4>
+                        ${offlineQueue.slice(0, 5).map(item => `
+                            <div style="padding:8px 0; border-bottom:1px dashed #FFCC80;">
+                                <div style="display:flex; justify-content:space-between;">
+                                    <span>${item.action === 'bookings' ? '📅' : '⚠️'} ${item.action}</span>
+                                    <small>${new Date(item.timestamp).toLocaleTimeString('id-ID')}</small>
+                                </div>
+                            </div>
+                        `).join('')}
+                        ${offlineQueue.length > 5 ? `<div style="text-align:center; margin-top:10px; color:#666;">... ${offlineQueue.length - 5} more</div>` : ''}
+                        
+                        <button class="btn btn-cloud" onclick="processOfflineQueue()" style="margin-top:15px;">
+                            🔄 Sync Now
+                        </button>
+                    </div>
+                    ` : ''}
+                    
+                    <button class="btn btn-back" onclick="showMainMenu()">
+                        ← Kembali ke Menu
+                    </button>
+                </div>
+            `;
+            
+            // Create or update sync panel
+            if (!document.getElementById('syncPanel')) {
+                const syncPanel = document.createElement('div');
+                syncPanel.id = 'syncPanel';
+                syncPanel.className = 'form-section';
+                document.querySelector('.container').appendChild(syncPanel);
+            }
+            
+            document.getElementById('syncPanel').innerHTML = statusHTML;
+            document.getElementById('syncPanel').style.display = 'block';
+            document.querySelector('.menu-grid').style.display = 'none';
+            currentView = 'sync';
+        }
+        
+        // ====================
+        // K3 AUTO-ROUTING SYSTEM
+        // ====================
+        function updateK3Routing() {
+            const jenis = document.getElementById('k3Jenis').value;
+            const routingInfo = document.getElementById('k3RoutingInfo');
+            const routingText = document.getElementById('routingText');
+            
+            if (jenis && CONFIG.K3_ROUTING[jenis]) {
+                const route = CONFIG.K3_ROUTING[jenis];
+                routingText.innerHTML = `${route.icon} <strong>Laporan akan dikirim ke:</strong> ${route.team}`;
+                routingInfo.style.borderLeftColor = route.color;
+                routingInfo.classList.remove('hidden');
+            } else {
+                routingInfo.classList.add('hidden');
+            }
+        }
+        
+        function takePhoto() {
+            document.getElementById('k3Foto').click();
+        }
+        
+        // ====================
+        // WHATSAPP FUNCTIONS
+        // ====================
+        function openWhatsApp(message, phoneNumber) {
+            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+            return url;
+        }
+        
+        // ====================
+        // BOOKING FUNCTIONS
+        // ====================
+        async function submitBooking() {
+            // Collect data
+            const bookingData = {
+                nama: document.getElementById('bookingNama').value,
+                divisi: document.getElementById('bookingDivisi').value,
+                whatsapp: document.getElementById('bookingWA').value,
+                sarana: document.getElementById('bookingSarana').value,
+                tanggal: document.getElementById('bookingTanggal').value,
+                waktu_mulai: document.getElementById('bookingMulai').value,
+                waktu_selesai: document.getElementById('bookingSelesai').value,
+                keterangan: document.getElementById('bookingKeterangan').value,
+                status: 'pending',
+                timestamp: new Date().toISOString()
+            };
+            
+            // Validation
+            if (!bookingData.nama || !bookingData.divisi || !bookingData.whatsapp || 
+                !bookingData.sarana || !bookingData.tanggal || !bookingData.waktu_mulai || 
+                !bookingData.waktu_selesai || !bookingData.keterangan) {
+                alert('❌ Harap isi semua field yang wajib!');
+                return;
+            }
+            
+            // Format date
+            const dateObj = new Date(bookingData.tanggal);
+            const formattedDate = dateObj.toLocaleDateString('id-ID', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+            
+            // Create WhatsApp message
+            const message = `*BOOKING FASILITAS - SIF AL FIKRI*\n\n` +
+                           `👤 Nama: ${bookingData.nama}\n` +
+                           `🏫 Divisi: ${bookingData.divisi}\n` +
+                           `📱 WhatsApp: ${bookingData.whatsapp}\n` +
+                           `🏢 Sarana: ${bookingData.sarana}\n` +
+                           `📅 Tanggal: ${formattedDate}\n` +
+                           `⏰ Waktu: ${bookingData.waktu_mulai} - ${bookingData.waktu_selesai}\n` +
+                           `📝 Keterangan: ${bookingData.keterangan}\n\n` +
+                           `_via Dream OS v${CONFIG.VERSION}_`;
+            
+            // Send to WhatsApp
+            openWhatsApp(message, CONFIG.WA_PAK_ERWIN);
+            
+            // Save locally
+            saveLocalData('booking', bookingData);
+            
+            // Sync to Supabase
+            const syncSuccess = await syncToSupabase('bookings', bookingData);
+            
+            if (!syncSuccess && navigator.onLine) {
+                alert('⚠️ WhatsApp terkirim, tapi sync ke cloud gagal. Data tersimpan lokal.');
+            } else if (!navigator.onLine) {
+                alert('📶 Offline mode: WhatsApp terkirim, data akan sync otomatis saat online.');
+            } else {
+                alert('✅ Berhasil! WhatsApp terkirim & data tersimpan di cloud.');
+            }
+            
+            // Reset form
+            document.getElementById('bookingNama').value = '';
+            document.getElementById('bookingWA').value = '';
+            document.getElementById('bookingKeterangan').value = '';
+            
+            showMainMenu();
+        }
+        
+        // ====================
+        // K3 FUNCTIONS
+        // ====================
+        async function submitK3() {
+            const jenis = document.getElementById('k3Jenis').value;
+            const lokasi = document.getElementById('k3Lokasi').value;
+            const barang = document.getElementById('k3Barang').value;
+            const deskripsi = document.getElementById('k3Deskripsi').value;
+            const fotoFile = document.getElementById('k3Foto').files[0];
+            
+            if (!jenis || !lokasi || !barang || !deskripsi) {
+                alert('❌ Harap isi semua field wajib!');
+                return;
+            }
+            
+            const route = CONFIG.K3_ROUTING[jenis];
+            if (!route) {
+                alert('❌ Jenis laporan tidak valid!');
+                return;
+            }
+            
+            // Prepare message
+            let message = `*LAPORAN ${jenis.toUpperCase()} - SIF AL FIKRI*\n\n` +
+                         `${route.icon} Ditujukan ke: ${route.team}\n` +
+                         `📍 Lokasi: ${lokasi}\n` +
+                         `📦 Barang/Masalah: ${barang}\n` +
+                         `📝 Deskripsi: ${deskripsi}\n` +
+                         `🕒 Waktu: ${new Date().toLocaleString('id-ID')}\n\n` +
+                         `_via Dream OS v${CONFIG.VERSION}_`;
+            
+            // Handle foto
+            let photoNote = '';
+            if (fotoFile) {
+                photoNote = `\n📸 *ADA FOTO LAMPIRAN* - silakan kirim foto secara manual di chat ini`;
+                message += photoNote;
+            }
+            
+            // Open WhatsApp to correct team
+            openWhatsApp(message, route.wa);
+            
+            // Prepare report data
+            const reportData = {
+                jenis,
+                lokasi,
+                barang,
+                deskripsi,
+                team: route.team,
+                target_wa: route.wa,
+                has_photo: !!fotoFile,
+                status: 'new',
+                priority: jenis === 'Emergency' ? 'high' : 'medium',
+                timestamp: new Date().toISOString()
+            };
+            
+            // Save locally
+            saveLocalData('k3', reportData);
+            
+            // Sync to Supabase
+            const syncSuccess = await syncToSupabase('k3_reports', reportData);
+            
+            // Reset form
+            document.getElementById('k3Lokasi').value = '';
+            document.getElementById('k3Barang').value = '';
+            document.getElementById('k3Deskripsi').value = '';
+            document.getElementById('k3Foto').value = '';
+            document.getElementById('k3RoutingInfo').classList.add('hidden');
+            
+            // Show instructions
+            let alertMsg = `✅ Laporan terkirim ke ${route.team}!`;
+            if (fotoFile) alertMsg += '\n\n📸 *SILAKAN KIRIM FOTO* secara manual di chat WhatsApp yang terbuka.';
+            if (!syncSuccess && navigator.onLine) alertMsg += '\n\n⚠️ Sync ke cloud gagal, data tersimpan lokal.';
+            if (!navigator.onLine) alertMsg += '\n\n📶 Offline: data akan sync otomatis saat online.';
+            
+            alert(alertMsg);
+            showMainMenu();
+        }
+        
+        // ====================
+        // ADMIN FUNCTIONS
+        // ====================
+        async function openAdminPanel() {
+            const password = prompt('🔐 Password Admin:');
+            
+            if (password === CONFIG.ADMIN_PASSWORD) {
+                // Fetch data
+                const [bookings, k3Reports, queueStatus] = await Promise.all([
+                    fetchFromSupabase('bookings'),
+                    fetchFromSupabase('k3_reports'),
+                    getQueueStatus()
+                ]);
+                
+                let adminHTML = `
+                    <div class="form-section" style="display:block;">
+                        <h3 class="form-title">🔐 Admin Panel v${CONFIG.VERSION}</h3>
+                        
+                        <div style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; padding:20px; border-radius:12px; margin-bottom:25px;">
+                            <div style="text-align:center;">
+                                <div style="font-size:2.5rem;">☁️</div>
+                                <div style="font-size:1.2rem;">Cloud-Powered Dashboard</div>
+                                <div style="font-size:0.9rem; opacity:0.9;">Supabase Sync Active</div>
+                            </div>
+                        </div>
+                        
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:25px;">
+                            <div style="background:#E3F2FD; padding:15px; border-radius:10px; text-align:center;">
+                                <div style="font-size:2rem; color:#1976D2;">${bookings.length}</div>
+                                <div style="color:#0D47A1;">Total Booking</div>
+                            </div>
+                            <div style="background:#F3E5F5; padding:15px; border-radius:10px; text-align:center;">
+                                <div style="font-size:2rem; color:#7B1FA2;">${k3Reports.length}</div>
+                                <div style="color:#4A148C;">Total Laporan K3</div>
+                            </div>
+                        </div>
+                        
+                        ${queueStatus.pending > 0 ? `
+                        <div style="background:#FFF3E0; padding:15px; border-radius:10px; margin-bottom:20px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <h4 style="color:#F57C00; margin:0;">🔄 Pending Sync: ${queueStatus.pending}</h4>
+                                    <small style="color:#666;">${queueStatus.lastSync}</small>
+                                </div>
+                                <button class="btn" onclick="processOfflineQueue()" style="width:auto; padding:10px 20px; background:#FF9800;">
+                                    Sync Now
+                                </button>
+                            </div>
+                        </div>
+                        ` : ''}
+                        
+                        <!-- QUICK ACTIONS -->
+                        <div style="background:#E8F5E9; padding:20px; border-radius:12px; margin-bottom:20px;">
+                            <h4 style="color:#2E7D32; margin-bottom:15px;">🚀 Quick Actions</h4>
+                            <button class="btn" onclick="exportData('booking')" style="margin-bottom:10px; background:#2196F3;">Export Booking CSV</button>
+                            <button class="btn" onclick="exportData('k3')" style="margin-bottom:10px; background:#9C27B0;">Export K3 CSV</button>
+                            <button class="btn" onclick="forceSync()" style="margin-bottom:10px; background:#FF9800;">Force Cloud Sync</button>
+                            <button class="btn" onclick="clearAllData()" style="background:#D32F2F;">Clear All Data</button>
+                        </div>
+                        
+                        <div style="color:#666; font-size:0.8rem; padding:10px; background:#F5F5F5; border-radius:8px; margin-bottom:20px;">
+                            <strong>💡 System Info:</strong><br>
+                            • Device: ${deviceId}<br>
+                            • Version: ${CONFIG.VERSION}<br>
+                            • Supabase: ${CONFIG.USE_SUPABASE ? 'Connected' : 'Disabled'}<br>
+                            • Queue: ${offlineQueue.length} pending<br>
+                            • Last Sync: ${new Date().toLocaleTimeString('id-ID')}
+                        </div>
+                        
+                        <button class="btn btn-back" onclick="showMainMenu()">
+                            ← Kembali ke Menu
+                        </button>
+                    </div>
+                `;
+                
+                // Create or update admin panel
+                if (!document.getElementById('adminPanel')) {
+                    const adminPanel = document.createElement('div');
+                    adminPanel.id = 'adminPanel';
+                    adminPanel.className = 'form-section';
+                    document.querySelector('.container').appendChild(adminPanel);
+                }
+                
+                document.getElementById('adminPanel').innerHTML = adminHTML;
+                document.getElementById('adminPanel').style.display = 'block';
+                document.querySelector('.menu-grid').style.display = 'none';
+                
+                currentView = 'admin';
+                
+            } else if (password !== null) {
+                alert('❌ Password salah!');
+            }
+        }
+        
+        async function fetchFromSupabase(table, filters = {}) {
+            if (!CONFIG.USE_SUPABASE || !supabaseClient) {
+                console.log('⚠️ Using local data (Supabase not available)');
+                return JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_${table}`) || '[]');
+            }
+            
+            try {
+                let query = supabaseClient.from(table).select('*');
+                
+                // Apply filters
+                Object.entries(filters).forEach(([key, value]) => {
+                    if (value !== undefined) {
+                        query = query.eq(key, value);
+                    }
+                });
+                
+                // Order by latest
+                query = query.order('created_at', { ascending: false });
+                
+                const { data, error } = await query;
+                
+                if (error) throw error;
+                
+                console.log(`✅ Fetched ${data.length} records from ${table}`);
+                return data;
+                
+            } catch (error) {
+                console.error(`❌ Supabase fetch failed:`, error);
+                return JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_${table}`) || '[]');
+            }
+        }
+        
+        async function getQueueStatus() {
+            const lastSync = localStorage.getItem('last_sync_time') || 'Never';
+            const pending = offlineQueue.length;
+            
+            return { pending, lastSync };
+        }
+        
+        async function forceSync() {
+            const result = await processOfflineQueue();
+            alert(`Force sync completed:\n✅ ${result.success} successful\n❌ ${result.failed} failed`);
+        }
+        
+        // ====================
+        // UTILITY FUNCTIONS
+        // ====================
+        function saveLocalData(type, data) {
+            const key = `${CONFIG.DATA_KEY}_${type}`;
+            let existing = JSON.parse(localStorage.getItem(key) || '[]');
+            existing.push(data);
+            localStorage.setItem(key, JSON.stringify(existing));
+        }
+        
+        function updateSystemStatus() {
+            const statusEl = document.getElementById('systemStatus');
+            const isOnline = navigator.onLine;
+            
+            if (isOnline) {
+                if (CONFIG.USE_SUPABASE) {
+                    statusEl.innerHTML = '☁️ SUPABASE SYNC • ONLINE';
+                    statusEl.className = 'status-badge cloud';
+                } else {
+                    statusEl.innerHTML = '🟢 ONLINE • WhatsApp Direct';
+                    statusEl.className = 'status-badge';
+                }
+            } else {
+                statusEl.innerHTML = '🔴 OFFLINE • Local Mode';
+                statusEl.className = 'status-badge offline';
+            }
+        }
+        
+        function updateSyncStatus(status, message) {
+            const syncEl = document.getElementById('syncStatus');
+            if (!syncEl) return;
+            
+            const icons = {
+                checking: '🔄',
+                syncing: '⚡',
+                synced: '✅',
+                connected: '☁️',
+                error: '❌'
+            };
+            
+            syncEl.innerHTML = `${icons[status] || '📡'} ${message}`;
+            syncEl.style.background = status === 'error' ? '#D32F2F' : 
+                                     status === 'synced' ? '#4CAF50' : 
+                                     'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+        }
+        
+        function showCalendar() {
+            const bookings = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_booking`) || '[]');
+            const today = new Date();
+            
+            let calendarText = '📅 KALENDER 30 HARI - SIF AL FIKRI\n\n';
+            
+            for (let i = 0; i < 30; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                const dateStr = date.toISOString().split('T')[0];
+                
+                const dayBookings = bookings.filter(b => b.tanggal === dateStr);
+                if (dayBookings.length > 0) {
+                    const dayName = date.toLocaleDateString('id-ID', { weekday: 'short' });
+                    const indoDate = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+                    calendarText += `📌 ${dayName}, ${indoDate}: ${dayBookings.length} booking\n`;
+                }
+            }
+            
+            if (calendarText === '📅 KALENDER 30 HARI - SIF AL FIKRI\n\n') {
+                calendarText += '✅ Belum ada booking dalam 30 hari ke depan.\n\n💡 Fasilitas masih tersedia semua!';
+            }
+            
+            alert(calendarText);
+        }
+        
+        function exportData(type) {
+            const data = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_${type}`) || '[]');
+            
+            if (data.length === 0) {
+                alert(`❌ Tidak ada data ${type} untuk diexport.`);
+                return;
+            }
+            
+            let csv = '';
+            
+            if (type === 'booking') {
+                csv = 'Nama,Divisi,WhatsApp,Sarana,Tanggal,Waktu Mulai,Waktu Selesai,Keterangan,Timestamp\n';
+                data.forEach(item => {
+                    csv += `"${item.nama}","${item.divisi}","${item.whatsapp}","${item.sarana}","${item.tanggal}","${item.waktu_mulai}","${item.waktu_selesai}","${item.keterangan}","${item.timestamp}"\n`;
+                });
+            } else if (type === 'k3') {
+                csv = 'Jenis,Lokasi,Barang,Deskripsi,Team,Target WA,Has Photo,Timestamp\n';
+                data.forEach(item => {
+                    csv += `"${item.jenis}","${item.lokasi}","${item.barang}","${item.deskripsi}","${item.team}","${item.target_wa}","${item.has_photo}","${item.timestamp}"\n`;
+                });
+            }
+            
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dream-os-${type}-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            
+            URL.revokeObjectURL(url);
+            
+            alert(`✅ ${data.length} data ${type} berhasil diexport!`);
+        }
+        
+        function clearAllData() {
+            if (confirm('⚠️ Hapus SEMUA data lokal?\n\nData di cloud tetap aman.\n\nLanjutkan?')) {
+                localStorage.clear();
+                offlineQueue = [];
+                alert('✅ Semua data lokal telah dihapus.');
+                if (currentView === 'admin') {
+                    openAdminPanel();
+                }
+            }
+        }
+        
+        function showToast(message, duration = 3000) {
+            const existing = document.getElementById('dream-toast');
+            if (existing) existing.remove();
+            
+            const toast = document.createElement('div');
+            toast.id = 'dream-toast';
+            toast.innerHTML = message;
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0,0,0,0.8);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 25px;
+                z-index: 10000;
+                font-size: 0.9rem;
+                animation: fadeInUp 0.3s ease;
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'fadeOutDown 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
+        
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from { opacity: 0; transform: translate(-50%, 20px); }
+                to { opacity: 1; transform: translate(-50%, 0); }
+            }
+            @keyframes fadeOutDown {
+                from { opacity: 1; transform: translate(-50%, 0); }
+                to { opacity: 0; transform: translate(-50%, 20px); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // ====================
+        // NETWORK HANDLERS
+        // ====================
+        window.addEventListener('online', async () => {
+            updateSystemStatus();
+            updateSyncStatus('checking', 'Koneksi pulih, sync dimulai...');
+            
+            console.log('✅ Internet connected');
+            
+            // Auto-sync queue
+            if (offlineQueue.length > 0) {
+                setTimeout(async () => {
+                    const result = await processOfflineQueue();
+                    if (result.success > 0) {
+                        showToast(`✅ ${result.success} data berhasil sync ke cloud`);
+                    }
+                }, 2000);
+            }
+        });
+        
+        window.addEventListener('offline', () => {
+            updateSystemStatus();
+            updateSyncStatus('error', 'Offline - data disimpan lokal');
+            console.log('⚠️ Internet disconnected');
+        });
+        
+        // ====================
+        // PWA INSTALL PROMPT
+        // ====================
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            setTimeout(() => {
+                if (deferredPrompt && confirm('Mau install Dream OS sebagai App di homescreen?')) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User installed the app');
+                            localStorage.setItem('pwa_installed', 'true');
+                        }
+                        deferredPrompt = null;
+                    });
+                }
+            }, 10000);
+        });
+    </script>
+</body>
+</html>
