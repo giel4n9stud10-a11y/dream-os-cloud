@@ -369,14 +369,11 @@
         window.openModal = openModal;
         window.closeModal = closeModal;
         window.approve = approve;
-    </script>
+    </script~>
 
-    // Tambahin kode ini di akhir file HTML lu (sebelum </body>)
-// Ini bakal nampilin debug info langsung di layar HP
-
-// EMERGENCY DEBUG PANEL
-const debugPanel = document.createElement('div');
-debugPanel.style.cssText = `
+    // EMERGENCY DEBUG PANEL
+   const debugPanel = document.createElement('div');
+  debugPanel.style.cssText = `
     position: fixed;
     bottom: 10px;
     left: 10px;
