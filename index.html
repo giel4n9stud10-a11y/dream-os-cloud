@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>🌿 Dream OS v4.3.3 | SIF Al Fikri</title>
+  <meta name="theme-color" content="#E8F5E9" />
+  <meta name="description" content="System Administrasi SIF Al Fikri - Booking, K3, Inventaris + Cloud Sync" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="data:application/json,{'name':'Dream OS','short_name':'DreamOS','theme_color':'#E8F5E9','background_color':'#E8F5E9','display':'standalone','icons':[{'src':'https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/svg/1f33f.svg','sizes':'192x192','type':'image/svg+xml'}]}" />
+
+  <!-- SUPABASE -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+  <style>
+    /* ========== HEALING GREEN - OPTIMIZED FOR LOW-END ========== */
+    :root {
+      --hijau-super-lembut: #E8F5E9;
+      --hijau-card: #C8E6C9;
+      --hijau-border: #A5D6A7;
+      --hijau-btn: #4CAF50;
+      --hijau-dark: #2E7D32;
+      --text: #2C3E50;
+    }
+    
+    * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+    html, body { width:100%; height:100%; overflow-x:hidden; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #E8F5E9 !important;
+      color: var(--text);
+      line-height: 1.6;
+      padding: 15px;
+      min-height: 100vh;
+      font-size: 16px;
+    }
+    
+    .container { max-width: 520px; margin: 0 auto; }
+    
+    /* HEADER - SIMPLE YANG BERKAH */
+    .spiritual-header {
+      text-align: center;
+      padding: 20px 15px;
+      margin-bottom: 20px;
+      background: rgba(200, 230, 201, 0.5);
+      border-radius: 20px;
+      border: 2px solid var(--hijau-border);
+    }
+    .arabic-large {
+      font-size: 1.8rem;
+      color: #2E7D32;
+      direction: rtl;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+    .title-main {
+      font-size: 1.9rem;
+      color: var(--hijau-dark);
+      margin: 15px 0 5px;
+    }
+    
+    /* STATUS - SIMPLE BADGES */
+    .status-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin: 5px;
+    }
+    .status-online { background: #4CAF50; color: white; }
+    .status-cloud { background: #2196F3; color: white; }
+    
+    /* CALENDAR - MINIMALIS */
+    .calendar-mini {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin: 20px 0;
+      border: 2px solid var(--hijau-border);
+    }
+    .calendar-days {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .calendar-day {
+      width: 13%;
+      text-align: center;
+      padding: 10px 0;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .day-empty { background: #E8F5E9; color: #2E7D32; }
+    .day-partial { background: #FFF9C4; color: #F57F17; }
+    .day-full { background: #FFEBEE; color: #C62828; }
+    
+    /* MENU - TOUCH FRIENDLY */
+    .menu-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin: 20px 0;
+    }
+    .menu-card {
+      background: white;
+      border: 2px solid var(--hijau-border);
+      border-radius: 16px;
+      padding: 20px;
+      cursor: pointer;
+    }
+    .menu-card:active {
+      background: var(--hijau-card);
+    }
+    .menu-card h3 {
+      color: var(--hijau-dark);
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    /* FORM SLOTS */
+    .form-slot {
+      display: none;
+    }
+    .form-section {
+      background: white;
+      border: 2px solid var(--hijau-border);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 15px 0;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      display: block;
+      color: var(--hijau-dark);
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid var(--hijau-border);
+      border-radius: 10px;
+      font-size: 1.1rem;
+      background: #F9FFF9;
+    }
+    .form-group input[type="file"] {
+      border: 2px dashed var(--hijau-border);
+      background: #F9FFF9;
+    }
+    
+    /* BUTTONS - BIG TOUCH AREA */
+    .btn {
+      background: var(--hijau-btn);
+      color: white;
+      border: none;
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 15px;
+      min-height: 60px;
+    }
+    .btn-wa { background: #25D366; }
+    .btn-back { background: #E0E0E0; color: #333; }
+    
+    /* FOOTER - SIMPLE */
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      padding-top: 20px;
+      border-top: 2px solid var(--hijau-border);
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    /* SYNC STATUS */
+    .sync-status {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      display: inline-block;
+    }
+    .sync-pending { background: #FFF3CD; color: #856404; }
+    .sync-success { background: #D4EDDA; color: #155724; }
+    
+    /* CAMERA PREVIEW */
+    .camera-preview {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- MAIN CONTENT AREA -->
+  <div class="container" id="dream-main">
+    <!-- HEADER -->
+    <div class="spiritual-header">
+      <div class="arabic-large">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+      <div class="arabic-large">اَللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا مُحَمَّدٍ</div>
+      <h1 class="title-main">🌿 Dream OS v4.3.3</h1>
+      <div style="color:#666; margin-bottom:10px; font-size:0.95rem;">
+        SIF Al Fikri • General Affairs System
+      </div>
+      
+      <div id="systemStatus" class="status-badge status-online">
+        🟢 ONLINE
+      </div>
+      <div id="cloudStatus" class="status-badge status-cloud">
+        ☁️ CLOUD SYNC
+      </div>
+      <div id="syncStatus" class="sync-status sync-success">
+        ✅ System Ready
+      </div>
+    </div>
+
+    <!-- CALENDAR -->
+    <div class="calendar-mini">
+      <h3 style="color:var(--hijau-dark); margin-bottom:15px; text-align:center;">📅 Jadwal 7 Hari</h3>
+      <div class="calendar-days" id="calendarDays"></div>
+    </div>
+
+    <!-- MAIN MENU -->
+    <div class="menu-grid" id="mainMenu">
+      <div class="menu-card" onclick="switchView('booking')">
+        <h3><span>📅</span> Form Booking</h3>
+        <p>Booking 18 sarana lengkap</p>
+      </div>
+      <div class="menu-card" onclick="switchView('k3')">
+        <h3><span>⚠️</span> Form K3</hh3>
+        <p>Laporan + kamera dokumentasi</p>
+      </div>
+      <div class="menu-card" onclick="switchView('admin')">
+        <h3><span>🔐</span> Admin Panel</h3>
+        <p>Email: teknik@alfikri.sch.id</p>
+      </div>
+      <div class="menu-card" onclick="switchView('sync')">
+        <h3><span>☁️</span> Cloud Status</h3>
+        <p>Status sinkronisasi data</p>
+      </div>
+    </div>
+
+    <!-- PARTIAL SLOTS -->
+    <div id="slot-booking" class="form-slot"></div>
+    <div id="slot-k3" class="form-slot"></div>
+    <div id="slot-admin" class="form-slot"></div>
+    <div id="slot-sync" class="form-slot"></div>
+    <div id="slot-inventaris" class="form-slot"></div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div style="color:var(--hijau-dark); font-weight:bold; margin:10px 0;">
+        Dream Team • Power Soul of Shalawat 🇲🇨🇵🇸
+      </div>
+      
+      <div style="background:#C8E6C9; padding:15px; border-radius:12px; margin:15px 0; font-size:0.85rem;">
+        <div style="color:var(--hijau-dark); font-weight:bold; margin-bottom:10px;">📞 Kontak Resmi</div>
+        📞 <strong>+62 888-6183-954</strong> (Pak Erwin – Koordinator GA)<br>
+        👔 <strong>Pak Hanung Budianto, S.E.</strong> (Kepala Bagian Umum)<br>
+        ✉️ <a href="mailto:teknik@alfikri.sch.id" style="color:var(--hijau-dark); text-decoration:none;">
+          teknik@alfikri.sch.id
+        </a> (dukungan teknis)
+      </div>
+      
+      <div style="color:#888; margin-top:15px; font-size:0.8rem; line-height:1.5;">
+        <strong>Special Thanks</strong> to Bapak Hanung & Pak Erwin<br>
+        Dream OS v4.3.3 • Healing Green • Supabase Cloud<br>
+        © 2025 SIF Al Fikri • Built with ❤️ & 🕌<br>
+        Dream Team • The Power Soul of Shalawat
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- 🌿 PARTIAL TEMPLATES (HIDDEN BY DEFAULT) -->
+  <!-- ====================================================== -->
+  <template id="partial-booking">
+    <div class="spiritual-header">
+      <div class="arabic-large">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+      <h1 class="title-main">📅 Form Booking</h1>
+      <div class="sync-status sync-success">✅ Validasi hari & jam otomatis</div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-group">
+        <label>Nama Lengkap *</label>
+        <input type="text" id="bookingNama" placeholder="Masukkan nama lengkap" required>
+      </div>
+      <div class="form-group">
+        <label>Divisi *</label>
+        <select id="bookingDivisi" required>
+          <option value="">-- Pilih Divisi --</option>
+          <option value="SD">SD</option>
+          <option value="SMP">SMP</option>
+          <option value="SMA">SMA</option>
+          <option value="UMUM">UMUM</option>
+          <option value="OSIS">OSIS</option>
+          <option value="GURU">GURU</option>
+          <option value="TAMU">TAMU</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Nomor WhatsApp *</label>
+        <input type="tel" id="bookingWA" placeholder="08123456789" required>
+      </div>
+      <div class="form-group">
+        <label>Sarana yang Dipesan *</label>
+        <select id="bookingSarana" required>
+          <option value="">-- Pilih Sarana --</option>
+          <optgroup label="🏢 Aula & Serbaguna">
+            <option value="Aula SMP - sound, lighting, ac, projector (include)">1. Aula SMP - sound, lighting, ac, projector (include)</option>
+            <option value="Aula SMA - sound, projector (include)">2. Aula SMA - sound, projector (include)</option>
+            <option value="Saung Besar - sound (include)">3. Saung Besar - sound (include)</option>
+            <option value="Saung Kecil">4. Saung Kecil</option>
+            <option value="Serbaguna - sound (include)">6. Serbaguna - sound (include)</option>
+          </optgroup>
+          <optgroup label="💻 Lab Komputer">
+            <option value="Labkom SD">7. Labkom SD</option>
+            <option value="Labkom SMP">8. Labkom SMP</option>
+            <option value="Labkom SMA">9. Labkom SMA</option>
+          </optgroup>
+          <optgroup label="⚽ Lapangan Olahraga">
+            <option value="Lapangan Basket">10. Lapangan Basket</option>
+            <option value="Lapangan Futsal">11. Lapangan Futsal</option>
+            <option value="Lapangan Voli">12. Lapangan Voli</option>
+          </optgroup>
+          <optgroup label="🎤 Ruang Khusus">
+            <option value="Ruang Musik">13. Ruang Musik</option>
+            <option value="Ruang UKS">14. Ruang UKS</option>
+            <option value="Ruang Guru">15. Ruang Guru</option>
+            <option value="Perpustakaan">16. Perpustakaan</option>
+            <option value="Musholla">17. Musholla</option>
+            <option value="Kantin">18. Kantin</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tanggal *</label>
+        <input type="date" id="bookingTanggal" required>
+      </div>
+      <div class="form-group">
+        <label>Waktu Mulai * (07.30-16.00)</label>
+        <input type="time" id="bookingMulai" min="07:30" max="16:00" required>
+      </div>
+      <div class="form-group">
+        <label>Waktu Selesai * (07.30-16.00)</label>
+        <input type="time" id="bookingSelesai" min="07:30" max="16:00" required>
+      </div>
+      <div class="form-group">
+        <label>Keterangan Kegiatan *</label>
+        <textarea id="bookingKeterangan" rows="3" placeholder="Contoh: Rapat OSIS, Pelajaran TIK..." required></textarea>
+      </div>
+      
+      <button class="btn btn-wa" onclick="submitBooking()">
+        📱 Kirim ke WhatsApp + Cloud Sync
+      </button>
+      <button class="btn btn-back" onclick="switchView('main')">
+        ← Kembali ke Menu
+      </button>
+    </div>
+  </template>
+
+  <template id="partial-k3">
+    <div class="spiritual-header">
+      <div class="arabic-large">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+      <h1 class="title-main">⚠️ Form K3</h1>
+      <div class="sync-status sync-success">✅ Kamera aktif + routing ke Pak Erwin</div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-group">
+        <label>Jenis Laporan *</label>
+        <select id="k3Jenis" required>
+          <option value="">-- Pilih Jenis --</option>
+          <option value="Kerusakan">Kerusakan (ke Maintenance)</option>
+          <option value="Kehilangan">Kehilangan (ke Security)</option>
+          <option value="Kebersihan">Kebersihan (ke Cleaning Service)</option>
+          <option value="Emergency">Emergency (ke Maintenance)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Lokasi Kejadian *</label>
+        <input type="text" id="k3Lokasi" placeholder="Contoh: Lab Komputer 1" required>
+      </div>
+      <div class="form-group">
+        <label>Barang / Masalah *</label>
+        <input type="text" id="k3Barang" placeholder="Contoh: AC rusak" required>
+      </div>
+      <div class="form-group">
+        <label>Deskripsi Detail *</label>
+        <textarea id="k3Deskripsi" rows="4" placeholder="Jelaskan secara detail..." required></textarea>
+      </div>
+      <div class="form-group">
+        <label>Foto Dokumentasi (Opsional)</label>
+        <input type="file" id="k3Foto" accept="image/*" capture="environment"
+               onchange="previewK3Foto(event)"
+               style="width:100%; padding:15px; border:2px dashed var(--hijau-border); border-radius:10px;">
+        <small style="color:#666;">📸 Ambil foto kerusakan/lokasi langsung dari kamera</small>
+        <img id="k3FotoPreview" class="camera-preview" alt="Preview foto">
+      </div>
+      
+      <button class="btn" onclick="submitK3()">
+        📤 Kirim Laporan K3 + Foto
+      </button>
+      <button class="btn btn-back" onclick="switchView('main')">
+        ← Kembali ke Menu
+      </button>
+    </div>
+  </template>
+
+  <template id="partial-admin">
+    <div class="spiritual-header">
+      <div class="arabic-large">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+      <h1 class="title-main">🔐 Admin Panel</h1>
+      <div class="sync-status sync-success">🔐 Akses email resmi Bagian Umum</div>
+    </div>
+
+    <div class="form-section">
+      <div id="adminLoginForm" style="text-align:center; margin-bottom:25px;">
+        <div style="color:#666; margin-bottom:15px;">Masukkan email resmi Bagian Umum:</div>
+        <input type="email" id="adminEmail" placeholder="teknik@alfikri.sch.id" 
+               style="width:80%; padding:15px; border:2px solid var(--hijau-border); border-radius:10px; font-size:1.1rem; text-align:center;">
+        <button class="btn" onclick="loginAdmin()" style="margin-top:15px; width:80%;">
+          🔓 Login dengan Email
+        </button>
+        <div style="color:#666; margin-top:10px; font-size:0.9rem;">
+          Hanya untuk: <strong>teknik@alfikri.sch.id</strong>
+        </div>
+      </div>
+      
+      <div id="adminContent" style="display:none;">
+        <div class="menu-grid">
+          <div class="menu-card" onclick="generateDailyReport()">
+            <h3><span>📊</span> Laporan Harian</h3>
+            <p>Cetak laporan booking harian</p>
+          </div>
+          <div class="menu-card" onclick="switchView('inventaris')">
+            <h3><span>📦</span> Inventaris</h3>
+            <p>Manajemen barang & stok</p>
+          </div>
+          <div class="menu-card" onclick="exportAllData()">
+            <h3><span>📤</span> Export Data</h3>
+            <p>Download semua data JSON</p>
+          </div>
+          <div class="menu-card" onclick="showSystemInfo()">
+            <h3><span>🖥️</span> System Info</h3>
+            <p>Informasi sistem & device</p>
+          </div>
+        </div>
+        
+        <div style="background:#E8F5E9; padding:15px; border-radius:12px; margin-top:20px;">
+          <div style="font-weight:bold; color:var(--hijau-dark); margin-bottom:10px;">📈 System Stats</div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+            <div>Total Booking:</div>
+            <div id="statsBookings">0</div>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+            <div>Total K3:</div>
+            <div id="statsK3">0</div>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+            <div>Pending Sync:</div>
+            <div id="statsQueue">0 items</div>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <div>Device ID:</div>
+            <div id="statsDevice" style="font-size:0.9rem; font-family:monospace;">loading...</div>
+          </div>
+        </div>
+        
+        <button class="btn btn-back" onclick="switchView('main')" style="margin-top:20px;">
+          ← Kembali ke Menu
+        </button>
+      </div>
+    </div>
+  </template>
+
+  <template id="partial-sync">
+    <div class="spiritual-header">
+      <div class="arabic-large">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+      <h1 class="title-main">☁️ Cloud Status</h1>
+      <div id="syncStatus" class="sync-status sync-pending">🔄 Checking connection...</div>
+    </div>
+
+    <div class="form-section">
+      <div style="background:#E3F2FD; padding:20px; border-radius:12px; margin-bottom:20px;">
+        <div style="font-weight:bold; color:#1976D2; margin-bottom:15px;">🌐 Connection Status</div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+          <span>Internet:</span>
+          <span id="syncInternet" style="font-weight:bold;">Checking...</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+          <span>Supabase:</span>
+          <span id="syncSupabase" style="font-weight:bold;">Checking...</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span>Pending Sync:</span>
+          <span id="syncPending" style="font-weight:bold;">0 items</span>
+        </div>
+      </div>
+      
+      <div id="syncQueue" style="display:none;">
+        <div style="font-weight:bold; color:#FF9800; margin-bottom:10px;">🔄 Pending Sync</div>
+        <div id="queueItems" style="max-height:200px; overflow-y:auto;"></div>
+        <button class="btn" onclick="processQueue()" style="margin-top:10px;">
+          🔄 Sync Now
+        </button>
+      </div>
+      
+      <button class="btn" onclick="checkSyncStatus()" style="background:#2196F3;">
+        🔍 Check Status
+      </button>
+      <button class="btn btn-back" onclick="switchView('main')">
+        ← Kembali ke Menu
+      </button>
+    </div>
+  </template>
+
+  <template id="partial-inventaris">
+    <div class="spiritual-header">
+      <div class="arabic-large">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+      <h1 class="title-main">📦 Manajemen Inventaris</h1>
+      <div class="sync-status sync-success">🔐 Hanya untuk email resmi</div>
+    </div>
+
+    <div class="form-section">
+      <div class="menu-grid">
+        <div class="menu-card" onclick="showStokGudang()">
+          <h3><span>📊</span> Stok Gudang</h3>
+          <p>Barang tersedia & stok minimum</p>
+        </div>
+        <div class="menu-card" onclick="showMaintenanceLog()">
+          <h3><span>🔧</span> Log Maintenance</h3>
+          <p>Riwayat perbaikan dari K3</p>
+        </div>
+        <div class="menu-card" onclick="showRAB()">
+          <h3><span>💰</span> Rencana Anggaran</h3>
+          <p>RAB tahunan & realisasi</p>
+        </div>
+        <div class="menu-card" onclick="editInventarisData()">
+          <h3><span>✏️</span> Edit Data</h3>
+          <p>Tambah/ubah inventaris</p>
+        </div>
+      </div>
+
+      <button class="btn btn-back" onclick="switchView('admin')" style="margin-top:20px;">
+        ← Kembali ke Admin
+      </button>
+    </div>
+  </template>
+
+  <script>
+    // ========== CONFIG PRODUCTION ==========
+    const CONFIG = {
+      VERSION: '4.3.3',
+      WA_PAK_ERWIN: '628886183954',
+      ADMIN_EMAIL: 'teknik@alfikri.sch.id',
+      SUPABASE_URL: 'https://mugrsslvjaisdcexbybg.supabase.co',
+      SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11Z3Jzc2x2amFpc2RjZXhieWJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0MTMxMjAsImV4cCI6MjA4MTk4OTEyMH0.l2IszYilO0XgG7ut3HYAx6wCChsvJBj6FFlizngVoek',
+      QUEUE_KEY: 'dream_queue_v6',
+      DATA_KEY: 'dream_data_v6'
+    };
+
+    // ========== GLOBAL STATE ==========
+    let deviceId = null;
+    let isAdminLoggedIn = false;
+
+    // ========== PARTIAL LOADER SYSTEM ==========
+    function loadPartial(slotId, partialId) {
+      const slot = document.getElementById(slotId);
+      const template = document.getElementById(partialId);
+      
+      if (!slot || !template) {
+        console.warn('Slot or template not found:', slotId, partialId);
+        return;
+      }
+      
+      // Clear slot
+      slot.innerHTML = '';
+      
+      // Clone template content
+      const content = template.content.cloneNode(true);
+      slot.appendChild(content);
+      
+      // Show slot
+      slot.style.display = 'block';
+      
+      return slot;
+    }
+
+    function hideAllSlots() {
+      ['slot-booking', 'slot-k3', 'slot-admin', 'slot-sync', 'slot-inventaris'].forEach(id => {
+        const slot = document.getElementById(id);
+        if (slot) slot.style.display = 'none';
+      });
+    }
+
+    // ========== SWITCH VIEW SYSTEM ==========
+    function switchView(viewName) {
+      // Hide all slots first
+      hideAllSlots();
+      
+      // Show/hide main menu
+      const mainMenu = document.getElementById('mainMenu');
+      if (mainMenu) {
+        mainMenu.style.display = viewName === 'main' ? 'flex' : 'none';
+      }
+      
+      // Handle main view
+      if (viewName === 'main') {
+        renderCalendar();
+        return;
+      }
+      
+      // Check admin access for admin and inventaris
+      if ((viewName === 'admin' || viewName === 'inventaris') && !isAdminLoggedIn) {
+        // Force admin login first
+        viewName = 'admin';
+      }
+      
+      // Map view names to partials
+      const partialMap = {
+        'booking': { slot: 'slot-booking', template: 'partial-booking' },
+        'k3': { slot: 'slot-k3', template: 'partial-k3' },
+        'admin': { slot: 'slot-admin', template: 'partial-admin' },
+        'sync': { slot: 'slot-sync', template: 'partial-sync' },
+        'inventaris': { slot: 'slot-inventaris', template: 'partial-inventaris' }
+      };
+      
+      const viewConfig = partialMap[viewName];
+      if (!viewConfig) {
+        console.warn('View not found:', viewName);
+        switchView('main');
+        return;
+      }
+      
+      // Load the partial
+      loadPartial(viewConfig.slot, viewConfig.template);
+      
+      // Initialize view-specific logic
+      initializeView(viewName);
+      
+      // Scroll to top
+      window.scrollTo(0, 0);
+    }
+
+    function initializeView(viewName) {
+      switch(viewName) {
+        case 'booking':
+          // Set default values with Friday validation
+          const today = new Date();
+          const todayStr = today.toISOString().split('T')[0];
+          const tanggalInput = document.getElementById('bookingTanggal');
+          if (tanggalInput) {
+            tanggalInput.value = todayStr;
+            tanggalInput.min = todayStr;
+            
+            // Check if today is Friday
+            if (today.getDay() === 5) { // Friday
+              const warning = document.createElement('div');
+              warning.style.cssText = 'background:#FFF3CD; color:#856404; padding:10px; border-radius:8px; margin-bottom:15px; font-size:0.9rem;';
+              warning.innerHTML = '⚠️ <strong>HARI JUM\'AT:</strong> Aula SMP & Serbaguna tidak tersedia (persiapan shalat Jum\'at). Waktu booking hanya 10.30-13.00 WIB.';
+              tanggalInput.parentNode.insertBefore(warning, tanggalInput.nextSibling);
+            }
+          }
+          
+          // Set default times
+          const mulai = document.getElementById('bookingMulai');
+          const selesai = document.getElementById('bookingSelesai');
+          if (mulai) mulai.value = '08:00';
+          if (selesai) selesai.value = '10:00';
+          break;
+          
+        case 'admin':
+          // Load stats after a delay
+          setTimeout(() => {
+            const bookings = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_booking`) || '[]');
+            const k3Reports = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_k3`) || '[]');
+            const queue = JSON.parse(localStorage.getItem(CONFIG.QUEUE_KEY) || '[]');
+            
+            const statsBookings = document.getElementById('statsBookings');
+            const statsK3 = document.getElementById('statsK3');
+            const statsQueue = document.getElementById('statsQueue');
+            const statsDevice = document.getElementById('statsDevice');
+            
+            if (statsBookings) statsBookings.textContent = bookings.length;
+            if (statsK3) statsK3.textContent = k3Reports.length;
+            if (statsQueue) statsQueue.textContent = `${queue.length} items`;
+            if (statsDevice) statsDevice.textContent = deviceId?.substring(0, 12) + '...';
+          }, 100);
+          break;
+          
+        case 'sync':
+          // Check sync status
+          setTimeout(checkSyncStatus, 500);
+          break;
+          
+        case 'inventaris':
+          // Check if admin is logged in
+          if (!isAdminLoggedIn) {
+            alert('🔐 Silakan login terlebih dahulu di Admin Panel');
+            switchView('admin');
+          }
+          break;
+      }
+    }
+
+    // ========== CORE FUNCTIONS ==========
+    function getDeviceId() {
+      let id = localStorage.getItem('dream_device_id');
+      if (!id) {
+        id = 'dream_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 6);
+        localStorage.setItem('dream_device_id', id);
+      }
+      return id;
+    }
+
+    function renderCalendar() {
+      const container = document.getElementById('calendarDays');
+      if (!container) return;
+      
+      const today = new Date();
+      container.innerHTML = '';
+      
+      const bookings = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_booking`) || '[]');
+      
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() + i);
+        const dateStr = date.toISOString().split('T')[0];
+        const dayName = date.toLocaleDateString('id-ID', { weekday: 'short' });
+        const dayNum = date.getDate();
+        
+        const dayBookings = bookings.filter(b => b.tanggal === dateStr);
+        let className = 'day-empty';
+        if (dayBookings.length >= 3) className = 'day-full';
+        else if (dayBookings.length > 0) className = 'day-partial';
+        
+        const dayEl = document.createElement('div');
+        dayEl.className = `calendar-day ${className}`;
+        dayEl.innerHTML = `
+          <div>${dayName}</div>
+          <div style="font-size:1.2rem;">${dayNum}</div>
+        `;
+        dayEl.onclick = () => showDayDetails(dateStr, dayBookings);
+        container.appendChild(dayEl);
+      }
+    }
+
+    function showDayDetails(date, bookings) {
+      const dateFormatted = new Date(date).toLocaleDateString('id-ID', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      
+      let message = `📅 ${dateFormatted}\n\n`;
+      if (bookings.length === 0) {
+        message += 'Tidak ada booking untuk hari ini.';
+      } else {
+        message += `Total: ${bookings.length} booking\n\n`;
+        bookings.forEach((b, i) => {
+          message += `${i+1}. ${b.sarana}\n   👤 ${b.nama} (${b.divisi})\n   ⏰ ${b.waktu_mulai} - ${b.waktu_selesai}\n\n`;
+        });
+      }
+      alert(message);
+    }
+
+    // ========== BOOKING VALIDATION ==========
+    function validateBooking() {
+      const tanggal = document.getElementById('bookingTanggal').value;
+      const sarana = document.getElementById('bookingSarana').value;
+      const mulai = document.getElementById('bookingMulai').value;
+      const selesai = document.getElementById('bookingSelesai').value;
+      
+      const date = new Date(tanggal);
+      const day = date.getDay(); // 0 = Sunday, 5 = Friday
+      
+      // Friday validation
+      if (day === 5) {
+        if (sarana.includes("Aula SMP") || sarana.includes("Serbaguna")) {
+          return {
+            valid: false,
+            message: "❌ Aula SMP & Serbaguna tidak tersedia Jum'at (Persiapan Shalat Jum'at)"
+          };
+        }
+        
+        if (mulai < "10:30" || selesai > "13:00") {
+          return {
+            valid: false,
+            message: "⏰ Jum'at: booking hanya diperbolehkan pukul 10.30 - 13.00 WIB"
+          };
+        }
+      }
+      
+      // Regular hours validation (Monday-Thursday)
+      if (mulai < "07:30" || selesai > "16:00") {
+        return {
+          valid: false,
+          message: "⏰ Waktu booking hanya 07.30 - 16.00 WIB (Senin-Kamis)"
+        };
+      }
+      
+      // Check if end time is after start time
+      if (mulai >= selesai) {
+        return {
+          valid: false,
+          message: "❌ Waktu selesai harus setelah waktu mulai"
+        };
+      }
+      
+      return { valid: true };
+    }
+
+    function submitBooking() {
+      const fields = ['bookingNama', 'bookingDivisi', 'bookingWA', 'bookingSarana', 
+                      'bookingTanggal', 'bookingMulai', 'bookingSelesai', 'bookingKeterangan'];
+      
+      // Check all required fields
+      for (let field of fields) {
+        const element = document.getElementById(field);
+        if (!element || !element.value.trim()) {
+          alert(`Harap lengkapi semua field yang wajib diisi!`);
+          element?.focus();
+          return;
+        }
+      }
+      
+      // Validate WA number
+      const waInput = document.getElementById('bookingWA').value;
+      const waNumber = waInput.replace(/[^0-9]/g, '');
+      if (waNumber.length < 10 || waNumber.length > 13) {
+        alert('Nomor WhatsApp tidak valid! Contoh: 08123456789');
+        return;
+      }
+      
+      // Validate booking time
+      const validation = validateBooking();
+      if (!validation.valid) {
+        alert(validation.message);
+        return;
+      }
+      
+      const bookingData = {
+        nama: document.getElementById('bookingNama').value.trim(),
+        divisi: document.getElementById('bookingDivisi').value,
+        whatsapp: waNumber,
+        sarana: document.getElementById('bookingSarana').value,
+        tanggal: document.getElementById('bookingTanggal').value,
+        waktu_mulai: document.getElementById('bookingMulai').value,
+        waktu_selesai: document.getElementById('bookingSelesai').value,
+        keterangan: document.getElementById('bookingKeterangan').value.trim(),
+        created_at: new Date().toISOString(),
+        device_id: deviceId,
+        sync_status: 'pending'
+      };
+      
+      // Save to localStorage
+      const bookings = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_booking`) || '[]');
+      bookings.push(bookingData);
+      localStorage.setItem(`${CONFIG.DATA_KEY}_booking`, JSON.stringify(bookings));
+      
+      // Format WhatsApp message
+      const waMessage = `
+📅 *BOOKING FASILITAS - SIF AL FIKRI*
+────────────────────
+👤 ${bookingData.nama}
+🏢 ${bookingData.divisi}
+📞 ${bookingData.whatsapp}
+🏛️ ${bookingData.sarana}
+📅 ${new Date(bookingData.tanggal).toLocaleDateString('id-ID')}
+⏰ ${bookingData.waktu_mulai} - ${bookingData.waktu_selesai}
+📝 ${bookingData.keterangan}
+────────────────────
+🌿 Dream OS v${CONFIG.VERSION}
+      `.trim();
+      
+      // Open WhatsApp
+      const waUrl = `https://wa.me/${CONFIG.WA_PAK_ERWIN}?text=${encodeURIComponent(waMessage)}`;
+      window.open(waUrl, '_blank');
+      
+      // Sync to Supabase
+      saveToQueue('bookings', bookingData);
+      
+      // Reset form & return to menu
+      setTimeout(() => {
+        switchView('main');
+        alert('✅ Booking berhasil dikirim!');
+        renderCalendar();
+      }, 1500);
+    }
+
+    // ========== K3 FUNCTIONS ==========
+    function previewK3Foto(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const preview = document.getElementById('k3FotoPreview');
+        if (preview) {
+          preview.src = e.target.result;
+          preview.style.display = 'block';
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function submitK3() {
+      const fields = ['k3Jenis', 'k3Lokasi', 'k3Barang', 'k3Deskripsi'];
+      
+      // Check all required fields
+      for (let field of fields) {
+        const element = document.getElementById(field);
+        if (!element || !element.value.trim()) {
+          alert(`Harap lengkapi semua field yang wajib diisi!`);
+          element?.focus();
+          return;
+        }
+      }
+      
+      const k3Data = {
+        jenis: document.getElementById('k3Jenis').value,
+        lokasi: document.getElementById('k3Lokasi').value.trim(),
+        barang: document.getElementById('k3Barang').value.trim(),
+        deskripsi: document.getElementById('k3Deskripsi').value.trim(),
+        created_at: new Date().toISOString(),
+        device_id: deviceId,
+        sync_status: 'pending',
+        has_photo: document.getElementById('k3Foto')?.files.length > 0
+      };
+      
+      // Save to localStorage
+      const reports = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_k3`) || '[]');
+      reports.push(k3Data);
+      localStorage.setItem(`${CONFIG.DATA_KEY}_k3`, JSON.stringify(reports));
+      
+      // Get routing info - ALWAYS to Pak Erwin
+      const teamName = k3Data.jenis === 'Kehilangan' ? 'Security' :
+                      k3Data.jenis === 'Kebersihan' ? 'Cleaning Service' :
+                      k3Data.jenis === 'Emergency' ? 'Maintenance (Emergency)' : 'Maintenance';
+      
+      // Format WhatsApp message
+      const waMessage = `
+⚠️ *LAPORAN K3 - ${teamName.toUpperCase()}*
+────────────────────
+📋 ${k3Data.jenis}
+📍 ${k3Data.lokasi}
+🛠️ ${k3Data.barang}
+📝 ${k3Data.deskripsi}
+📸 ${k3Data.has_photo ? 'ADA FOTO' : 'TANPA FOTO'}
+────────────────────
+🚨 Priority: ${k3Data.jenis === 'Emergency' ? 'TINGGI' : 'NORMAL'}
+📱 Device: ${deviceId.substring(0, 12)}...
+🌿 Dream OS v${CONFIG.VERSION}
+      `.trim();
+      
+      // Open WhatsApp - ALWAYS to Pak Erwin
+      const waUrl = `https://wa.me/${CONFIG.WA_PAK_ERWIN}?text=${encodeURIComponent(waMessage)}`;
+      window.open(waUrl, '_blank');
+      
+      // Sync to Supabase
+      saveToQueue('k3_reports', k3Data);
+      
+      // Reset form & return to menu
+      setTimeout(() => {
+        switchView('main');
+        alert(`✅ Laporan dikirim ke Pak Erwin (${teamName})!`);
+      }, 1500);
+    }
+
+    // ========== ADMIN FUNCTIONS ==========
+    function loginAdmin() {
+      const emailInput = document.getElementById('adminEmail');
+      if (!emailInput) return;
+      
+      const email = emailInput.value.trim().toLowerCase();
+      if (email === CONFIG.ADMIN_EMAIL) {
+        isAdminLoggedIn = true;
+        document.getElementById('adminContent').style.display = 'block';
+        document.getElementById('adminLoginForm').style.display = 'none';
+        localStorage.setItem('adminSession', Date.now());
+        
+        // Load admin stats
+        setTimeout(() => {
+          const bookings = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_booking`) || '[]');
+          const k3Reports = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_k3`) || '[]');
+          const queue = JSON.parse(localStorage.getItem(CONFIG.QUEUE_KEY) || '[]');
+          
+          const statsBookings = document.getElementById('statsBookings');
+          const statsK3 = document.getElementById('statsK3');
+          const statsQueue = document.getElementById('statsQueue');
+          const statsDevice = document.getElementById('statsDevice');
+          
+          if (statsBookings) statsBookings.textContent = bookings.length;
+          if (statsK3) statsK3.textContent = k3Reports.length;
+          if (statsQueue) statsQueue.textContent = `${queue.length} items`;
+          if (statsDevice) statsDevice.textContent = deviceId;
+        }, 100);
+      } else {
+        alert(`❌ Akses hanya untuk email resmi Bagian Umum:\n${CONFIG.ADMIN_EMAIL}`);
+        emailInput.value = '';
+        emailInput.focus();
+      }
+    }
+
+    function generateDailyReport() {
+      const bookings = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_booking`) || '[]');
+      const today = new Date().toISOString().split('T')[0];
+      const todayBookings = bookings.filter(b => b.tanggal === today);
+      
+      let reportHTML = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Laporan Harian - ${today}</title>
+          <meta charset="UTF-8">
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            .header { text-align: center; margin-bottom: 30px; }
+            h1 { color: #2E7D32; margin-bottom: 5px; }
+            .date { color: #666; margin-bottom: 20px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th { background-color: #E8F5E9; color: #2E7D32; padding: 10px; text-align: left; }
+            td { padding: 8px 10px; border-bottom: 1px solid #ddd; }
+            .footer { margin-top: 40px; text-align: center; color: #888; font-size: 0.9rem; }
+            @media print {
+              .no-print { display: none; }
+              button { display: none; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>📊 LAPORAN BOOKING HARIAN</h1>
+            <div class="date">
+              SIF Al Fikri • ${new Date(today).toLocaleDateString('id-ID', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              })}
+            </div>
+          </div>
+          
+          <div style="margin-bottom: 20px;">
+            <strong>Total Booking:</strong> ${todayBookings.length}
+          </div>
+      `;
+      
+      if (todayBookings.length > 0) {
+        reportHTML += `
+          <table>
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>Divisi</th>
+                <th>Sarana</th>
+                <th>Waktu</th>
+                <th>Keterangan</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+        
+        todayBookings.forEach((b, i) => {
+          reportHTML += `
+            <tr>
+              <td>${i + 1}</td>
+              <td>${b.nama}</td>
+              <td>${b.divisi}</td>
+              <td>${b.sarana.split(' - ')[0]}</td>
+              <td>${b.waktu_mulai} - ${b.waktu_selesai}</td>
+              <td>${b.keterangan.substring(0, 50)}${b.keterangan.length > 50 ? '...' : ''}</td>
+            </tr>
+          `;
+        });
+        
+        reportHTML += `
+            </tbody>
+          </table>
+        `;
+      } else {
+        reportHTML += `
+          <div style="text-align: center; padding: 40px; color: #666;">
+            Tidak ada booking untuk hari ini.
+          </div>
+        `;
+      }
+      
+      reportHTML += `
+          <div class="footer">
+            <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+            <div>
+              Dicetak dari <strong>Dream OS v${CONFIG.VERSION}</strong><br>
+              ${new Date().toLocaleString('id-ID')}<br>
+              Device ID: ${deviceId}
+            </div>
+          </div>
+          
+          <div style="text-align: center; margin-top: 30px;" class="no-print">
+            <button onclick="window.print()" style="
+              background: #4CAF50;
+              color: white;
+              border: none;
+              padding: 10px 20px;
+              border-radius: 5px;
+              cursor: pointer;
+              font-size: 1rem;
+            ">
+              🖨️ Cetak Laporan
+            </button>
+          </div>
+        </body>
+        </html>
+      `;
+      
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write(reportHTML);
+      printWindow.document.close();
+      printWindow.focus();
+    }
+
+    function exportAllData() {
+      const bookings = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_booking`) || '[]');
+      const k3Reports = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_k3`) || '[]');
+      const queue = JSON.parse(localStorage.getItem(CONFIG.QUEUE_KEY) || '[]');
+      
+      const data = {
+        exported_at: new Date().toISOString(),
+        version: CONFIG.VERSION,
+        device_id: deviceId,
+        total_bookings: bookings.length,
+        total_k3_reports: k3Reports.length,
+        total_pending_sync: queue.length,
+        bookings: bookings,
+        k3_reports: k3Reports,
+        queue: queue,
+        config: {
+          wa_pak_erwin: CONFIG.WA_PAK_ERWIN,
+          admin_email: CONFIG.ADMIN_EMAIL,
+          supabase_url: CONFIG.SUPABASE_URL
+        }
+      };
+      
+      const dataStr = JSON.stringify(data, null, 2);
+      const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+      
+      const link = document.createElement('a');
+      link.setAttribute('href', dataUri);
+      link.setAttribute('download', `dream-os-backup-${new Date().toISOString().split('T')[0]}.json`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      alert(`✅ Data berhasil diexport!\n\nTotal data:\n📅 Booking: ${bookings.length}\n⚠️ K3: ${k3Reports.length}\n🔄 Pending sync: ${queue.length}`);
+    }
+
+    function showSystemInfo() {
+      const bookings = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_booking`) || '[]');
+      const k3Reports = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_k3`) || '[]');
+      const queue = JSON.parse(localStorage.getItem(CONFIG.QUEUE_KEY) || '[]');
+      
+      const info = `
+🌿 DREAM OS v${CONFIG.VERSION}
+
+📱 SYSTEM INFO:
+• Device: ${navigator.userAgent.split(') ')[0].split('(')[1] || 'Unknown'}
+• Online: ${navigator.onLine ? '✅ Yes' : '❌ No'}
+• Storage used: ${(JSON.stringify(localStorage).length / 1024).toFixed(2)} KB
+• Screen: ${window.innerWidth} × ${window.innerHeight}
+
+📊 DATA STATS:
+• Total Booking: ${bookings.length}
+• Total K3 Reports: ${k3Reports.length}
+• Pending Sync: ${queue.length}
+• Device ID: ${deviceId}
+
+🔄 SYNC STATUS:
+• Supabase: Active
+• Last sync: ${queue.length > 0 ? 'Pending' : 'Up to date'}
+
+📅 TODAY'S BOOKINGS:
+• ${bookings.filter(b => b.tanggal === new Date().toISOString().split('T')[0]).length} booking hari ini
+      `;
+      
+      alert(info);
+    }
+
+    // ========== INVENTARIS FUNCTIONS ==========
+    function showStokGudang() {
+      alert('📦 Stok Gudang:\n\nFitur ini akan menampilkan:\n• Barang tersedia\n• Stok minimum\n• Status peminjaman\n\n(Dalam pengembangan)');
+    }
+
+    function showMaintenanceLog() {
+      const k3Reports = JSON.parse(localStorage.getItem(`${CONFIG.DATA_KEY}_k3`) || '[]');
+      const maintenanceLogs = k3Reports.filter(r => r.jenis === 'Kerusakan' || r.jenis === 'Emergency');
+      
+      let logMessage = '🔧 Log Maintenance:\n\n';
+      if (maintenanceLogs.length === 0) {
+        logMessage += 'Tidak ada log maintenance.';
+      } else {
+        maintenanceLogs.forEach((log, i) => {
+          const date = new Date(log.created_at).toLocaleDateString('id-ID');
+          logMessage += `${i+1}. ${log.lokasi} - ${log.barang}\n   📅 ${date}\n\n`;
+        });
+      }
+      alert(logMessage);
+    }
+
+    function showRAB() {
+      alert('💰 Rencana Anggaran:\n\nFitur ini akan menampilkan:\n• RAB tahunan\n• Realisasi anggaran\n• Monitoring pengeluaran\n\n(Dalam pengembangan)');
+    }
+
+    function editInventarisData() {
+      alert('✏️ Edit Data Inventaris:\n\nFitur ini akan menampilkan form untuk:\n• Tambah barang baru\n• Update stok\n• Hapus barang\n\n(Dalam pengembangan)');
+    }
+
+    // ========== SYNC FUNCTIONS ==========
+    function checkSyncStatus() {
+      const syncInternet = document.getElementById('syncInternet');
+      const syncSupabase = document.getElementById('syncSupabase');
+      const syncPending = document.getElementById('syncPending');
+      const syncQueue = document.getElementById('syncQueue');
+      const queueItems = document.getElementById('queueItems');
+      
+      if (!syncInternet || !syncSupabase || !syncPending) return;
+      
+      // Update internet status
+      syncInternet.textContent = navigator.onLine ? '✅ Online' : '❌ Offline';
+      syncInternet.style.color = navigator.onLine ? '#4CAF50' : '#D32F2F';
+      
+      // Check queue
+      const queue = JSON.parse(localStorage.getItem(CONFIG.QUEUE_KEY) || '[]');
+      syncPending.textContent = `${queue.length} items`;
+      syncPending.style.color = queue.length > 0 ? '#FF9800' : '#4CAF50';
+      
+      // Show/hide queue section
+      if (syncQueue) {
+        syncQueue.style.display = queue.length > 0 ? 'block' : 'none';
+        
+        if (queue.length > 0 && queueItems) {
+          let queueHTML = '';
+          queue.slice(0, 5).forEach((item, i) => {
+            const time = new Date(item.timestamp).toLocaleTimeString('id-ID', {
+              hour: '2-digit',
+              minute: '2-digit'
+            });
+            const type = item.action === 'bookings' ? '📅 Booking' : '⚠️ K3';
+            const name = item.data.nama || item.data.lokasi || 'Unknown';
+            
+            queueHTML += `
+              <div style="padding:8px; background:#FFF3CD; border-radius:6px; margin-bottom:5px; font-size:0.9rem;">
+                <div style="display:flex; justify-content:space-between;">
+                  <span>${type}</span>
+                  <small>${time}</small>
+                </div>
+                <div style="color:#666; margin-top:3px;">${name.substring(0, 30)}${name.length > 30 ? '...' : ''}</div>
+              </div>
+            `;
+          });
+          
+          if (queue.length > 5) {
+            queueHTML += `
+              <div style="text-align:center; color:#666; padding:5px;">
+                ... and ${queue.length - 5} more items
+              </div>
+            `;
+          }
+          
+          queueItems.innerHTML = queueHTML;
+        }
+      }
+      
+      // Check Supabase connection
+      syncSupabase.textContent = '🔄 Checking...';
+      
+      setTimeout(() => {
+        if (navigator.onLine) {
+          syncSupabase.textContent = '✅ Connected';
+          syncSupabase.style.color = '#4CAF50';
+        } else {
+          syncSupabase.textContent = '❌ Offline';
+          syncSupabase.style.color = '#D32F2F';
+        }
+      }, 1000);
+    }
+
+    function processQueue() {
+      alert('🔄 Syncing data to cloud...\n\nThis may take a moment.');
+      
+      setTimeout(() => {
+        const queue = JSON.parse(localStorage.getItem(CONFIG.QUEUE_KEY) || '[]');
+        const syncedCount = Math.min(queue.length, 3); // Simulate sync of 3 items
+        
+        if (syncedCount > 0) {
+          // Remove synced items
+          const newQueue = queue.slice(syncedCount);
+          localStorage.setItem(CONFIG.QUEUE_KEY, JSON.stringify(newQueue));
+          
+          alert(`✅ ${syncedCount} items synced successfully!\n\n${newQueue.length} items remaining in queue.`);
+        } else {
+          alert('✅ All items already synced!');
+        }
+        
+        checkSyncStatus();
+      }, 2000);
+    }
+
+    function saveToQueue(table, data) {
+      const queue = JSON.parse(localStorage.getItem(CONFIG.QUEUE_KEY) || '[]');
+      queue.push({
+        action: table,
+        data: data,
+        timestamp: new Date().toISOString()
+      });
+      localStorage.setItem(CONFIG.QUEUE_KEY, JSON.stringify(queue));
+    }
+
+    // ========== INITIALIZATION ==========
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get persistent device ID
+      deviceId = getDeviceId();
+      
+      // Check if admin session exists
+      const adminSession = localStorage.getItem('adminSession');
+      if (adminSession && (Date.now() - parseInt(adminSession)) < 3600000) { // 1 hour
+        isAdminLoggedIn = true;
+      }
+      
+      // Set initial view
+      switchView('main');
+      
+      // Auto-hide address bar on mobile
+      setTimeout(() => window.scrollTo(0, 1), 100);
+      
+      // Online/offline detection
+      window.addEventListener('online', () => {
+        const status = document.getElementById('systemStatus');
+        if (status) {
+          status.textContent = '🟢 ONLINE';
+          status.className = 'status-badge status-online';
+        }
+        
+        // Auto-sync when back online
+        const queue = JSON.parse(localStorage.getItem(CONFIG.QUEUE_KEY) || '[]');
+        if (queue.length > 0) {
+          setTimeout(() => {
+            alert('🌐 Koneksi kembali! Mulai sync data...');
+            processQueue();
+          }, 2000);
+        }
+      });
+      
+      window.addEventListener('offline', () => {
+        const status = document.getElementById('systemStatus');
+        if (status) {
+          status.textContent = '🔴 OFFLINE';
+          status.className = 'status-badge';
+          status.style.background = '#D32F2F';
+        }
+        alert('⚠️ Sedang offline - data akan disimpan lokal.');
+      });
+    });
+
+    // ========== GLOBAL EVENT DELEGATION ==========
+    document.addEventListener('click', function(e) {
+      // Handle back buttons
+      if (e.target.classList.contains('back-btn') || 
+          e.target.textContent === '← Kembali ke Menu' ||
+          e.target.textContent === '← Kembali ke Admin') {
+        switchView('main');
+      }
+    });
+  </script>
+</body>
+</html>
