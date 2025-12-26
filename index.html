@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>🌿 Dream OS v4.4 | SIF Al Fikri</title>
+  
+  <meta name="theme-color" content="#4CAF50" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="System Administrasi SIF Al Fikri - The Power Soul of Shalawat" />
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --bg-main: #F8FCF6;
+      --bg-card: #EAF7ED;
+      --accent: #4CAF50;
+      --accent-hover: #45A049;
+      --text-dark: #2E7D32;
+      --border-soft: #C8E6C9;
+      --shadow-soft: rgba(0,0,0,0.05);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg-main);
+      color: var(--text-dark);
+      line-height: 1.6;
+      padding: 16px;
+      min-height: 100vh;
+      font-size: 16px;
+    }
+
+    .container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+
+    .header-gradient {
+      background: linear-gradient(135deg, #EAF7ED 0%, #F8FCF6 100%);
+      padding: 24px 20px;
+      border-radius: 20px;
+      text-align: center;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 4px 12px var(--shadow-soft);
+    }
+
+    .arabic-large { font-size: 1.5rem; color: var(--text-dark); direction: rtl; margin: 4px 0; font-weight: bold; opacity: 0.8; }
+    .title-main { font-size: 1.8rem; font-weight: 700; margin: 8px 0; }
+    .subtitle { color: #666; font-size: 0.9rem; }
+
+    .badge-container { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 15px; }
+    .badge { padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; background: white; border: 1px solid var(--border-soft); }
+    .badge.online { color: #4CAF50; }
+
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+    .feature-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 16px 10px;
+      box-shadow: 0 3px 10px var(--shadow-soft);
+      border: 1px solid var(--border-soft);
+      cursor: pointer;
+      text-align: center;
+      transition: 0.2s;
+    }
+    .feature-card:hover { transform: translateY(-2px); background: #fff; }
+    .feature-icon { font-size: 1.8rem; margin-bottom: 8px; }
+    .feature-title { font-size: 0.85rem; font-weight: 600; }
+
+    .card { background: white; border-radius: 18px; padding: 20px; border: 1px solid var(--border-soft); box-shadow: 0 4px 12px var(--shadow-soft); }
+    .form-group { margin-bottom: 15px; }
+    .form-label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.9rem; }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; padding: 12px; border: 1.5px solid var(--border-soft); border-radius: 10px; font-size: 1rem;
+    }
+
+    .btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px; border-radius: 12px; font-weight: 600; border: none; cursor: pointer; transition: 0.3s; width: 100%;
+      background: var(--accent); color: white;
+    }
+    .btn-secondary { background: #f0f0f0; color: #444; }
+
+    .hidden { display: none !important; }
+    #toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: #333; color: white; padding: 10px 20px; border-radius: 30px; z-index: 9999; display: none; font-size: 0.9rem;
+    }
+    .img-preview { width: 100%; border-radius: 10px; margin-top: 10px; display: none; border: 1px solid #ddd; }
+    
+    .footer { text-align: center; padding: 20px; font-size: 0.8rem; color: #555; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <div id="toast"></div>
+
+  <div class="container" id="main-container">
+    <div class="header-gradient">
+      <div class="arabic-large">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+      <h1 class="title-main">🌿 Dream OS v4.4</h1>
+      <div class="subtitle">SIF Al Fikri • The Power Soul of Shalawat</div>
+      <div class="badge-container">
+        <div id="sync-status" class="badge online">🟢 CLOUD ACTIVE</div>
+        <div class="badge">📡 v4.4 Hybrid</div>
+      </div>
+    </div>
+
+    <div id="menu-grid" class="feature-grid">
+      <div class="feature-card" onclick="showBookingForm()">
+        <div class="feature-icon">📅</div>
+        <div class="feature-title">Booking</div>
+      </div>
+      <div class="feature-card" onclick="showK3Form()">
+        <div class="feature-icon">⚠️</div>
+        <div class="feature-title">Laporan K3</div>
+      </div>
+      <div class="feature-card" onclick="showAdminPanel()">
+        <div class="feature-icon">🔐</div>
+        <div class="feature-title">Admin</div>
+      </div>
+      <div class="feature-card" onclick="backupData()">
+        <div class="feature-icon">💾</div>
+        <div class="feature-title">Backup</div>
+      </div>
+    </div>
+
+    <div id="form-container" class="hidden"></div>
+
+    <div class="footer">
+      🌿 Dream Team – The Power Soul of Shalawat<br>
+      “رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي”<br>
+      © 2025 SIF Al Fikri • 🇮🇩🇵🇸
+    </div>
+  </div>
+
+  <script>
+    // ========== CONFIGURASI FINAL ==========
+    const WA_PAK_ERWIN = "628886183954";
+    const SB_URL = "https://mugrsslvjaisdcexbybg.supabase.co";
+    const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11Z3Jzc2x2amFpc2RjZXhieWJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0MTMxMjAsImV4cCI6MjA4MTk4OTEyMH0.l2IszYilO0XgG7ut3HYAx6wCChsvJBj6FFlizngVoek";
+
+    let _supabase = null;
+    try {
+      _supabase = supabase.createClient(SB_URL, SB_KEY);
+    } catch (e) {
+      console.warn("Supabase offline");
+      document.getElementById('sync-status').innerText = "🔴 OFFLINE MODE";
+    }
+
+    // ========== UTILS ==========
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.innerText = msg;
+      t.style.display = 'block';
+      setTimeout(() => t.style.display = 'none', 3000);
+    }
+
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+    }
+
+    function showMainMenu() {
+      document.getElementById('menu-grid').classList.remove('hidden');
+      document.getElementById('form-container').classList.add('hidden');
+    }
+
+    // ========== BOOKING ==========
+    function showBookingForm() {
+      const html = `
+        <div class="card">
+          <h2 style="margin-bottom:15px">📅 Booking Sarana</h2>
+          <form id="bookingForm">
+            <div class="form-group">
+              <label class="form-label">Nama Lengkap *</label>
+              <input type="text" id="nama" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Divisi *</label>
+              <select id="divisi" class="form-select" required>
+                <option value="SD">SD</option>
+                <option value="SMP">SMP</option>
+                <option value="SMA">SMA</option>
+                <option value="UMUM">UMUM</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">WhatsApp (Opsional)</label>
+              <input type="text" id="whatsapp" class="form-input" placeholder="628xx">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Sarana *</label>
+              <select id="sarana" class="form-select" required>
+                <option value="Aula SMP">Aula SMP</option>
+                <option value="Aula SMA">Aula SMA</option>
+                <option value="Labkom">Laboratorium Komputer</option>
+                <option value="Lapangan">Lapangan Olahraga</option>
+                <option value="Masjid">Masjid Baitul Hikmah</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tanggal *</label>
+              <input type="date" id="tanggal" class="form-input" required>
+            </div>
+            <div class="form-group" style="display:flex; gap:10px">
+              <div style="flex:1">
+                <label class="form-label">Mulai</label>
+                <input type="time" id="waktuMulai" class="form-input" value="07:30" required>
+              </div>
+              <div style="flex:1">
+                <label class="form-label">Selesai</label>
+                <input type="time" id="waktuSelesai" class="form-input" value="16:00" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Keterangan</label>
+              <textarea id="keterangan" class="form-textarea" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn">Kirim & Simpan Cloud</button>
+            <button type="button" class="btn btn-secondary" onclick="showMainMenu()">Batal</button>
+          </form>
+        </div>
+      `;
+      document.getElementById('form-container').innerHTML = html;
+      document.getElementById('menu-grid').classList.add('hidden');
+      document.getElementById('form-container').classList.remove('hidden');
+      document.getElementById('tanggal').min = new Date().toISOString().split('T')[0];
+      document.getElementById('bookingForm').onsubmit = submitBooking;
+    }
+
+    async function submitBooking(e) {
+      e.preventDefault();
+      const data = {
+        nama: document.getElementById('nama').value,
+        divisi: document.getElementById('divisi').value,
+        whatsapp: document.getElementById('whatsapp').value,
+        sarana: document.getElementById('sarana').value,
+        tanggal: document.getElementById('tanggal').value,
+        waktu_mulai: document.getElementById('waktuMulai').value,
+        waktu_selesai: document.getElementById('waktuSelesai').value,
+        keterangan: document.getElementById('keterangan').value
+      };
+
+      // Cegah booking tanggal lalu
+      const today = new Date().toISOString().split('T')[0];
+      if (data.tanggal < today) {
+        showToast("❌ Tidak bisa booking tanggal lalu!");
+        return;
+      }
+
+      let cloudOK = false;
+      if (_supabase) {
+        try {
+          const { error } = await _supabase.from('bookings').insert([data]);
+          if (error) throw error;
+          cloudOK = true;
+        } catch (err) {
+          console.error("Cloud error:", err);
+        }
+      }
+
+      // Simpan ke local (offline backup)
+      try {
+        const bookings = JSON.parse(localStorage.getItem('dream_bookings') || '[]');
+        bookings.push({...data, timestamp: new Date().toISOString()});
+        localStorage.setItem('dream_bookings', JSON.stringify(bookings));
+      } catch (err) {
+        console.warn("Local save failed");
+      }
+
+      // Kirim ke WA
+      const msg = `*BOOKING FASILITAS - SIF AL FIKRI*
+بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+
+👤 *Pemohon:* ${data.nama}
+🏫 *Divisi:* ${data.divisi}
+📱 *WhatsApp:* ${data.whatsapp || '–'}
+🏢 *Sarana:* ${data.sarana}
+📅 *Tanggal:* ${formatDate(data.tanggal)}
+⏰ *Waktu:* ${data.waktu_mulai} - ${data.waktu_selesai}
+📝 *Keterangan:* ${data.keterangan || '–'}
+
+_— Dream OS v4.4 Hybrid Cloud Edition_`;
+      
+      window.open(`https://wa.me/${WA_PAK_ERWIN}?text=${encodeURIComponent(msg)}`, '_blank');
+      
+      showToast(`✅ ${cloudOK ? 'Tersimpan di cloud' : 'Dikirim via WA'}`);
+      showMainMenu();
+    }
+
+    // ========== K3 ==========
+    function showK3Form() {
+      const html = `
+        <div class="card">
+          <h2 style="margin-bottom:15px">⚠️ Laporan K3</h2>
+          <form id="k3Form">
+            <div class="form-group">
+              <label class="form-label">Jenis Laporan *</label>
+              <select id="k3_jenis" class="form-select" required>
+                <option value="Kerusakan">Kerusakan</option>
+                <option value="Insiden">Insiden</option>
+                <option value="Bahaya">Potensi Bahaya</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Lokasi *</label>
+              <input type="text" id="k3_lokasi" class="form-input" placeholder="Contoh: Kelas 4B" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nama Barang (Jika Rusak)</label>
+              <input type="text" id="k3_barang" class="form-input">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Deskripsi *</label>
+              <textarea id="k3_deskripsi" class="form-textarea" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn">Kirim Laporan</button>
+            <button type="button" class="btn btn-secondary" onclick="showMainMenu()">Batal</button>
+          </form>
+        </div>
+      `;
+      document.getElementById('form-container').innerHTML = html;
+      document.getElementById('menu-grid').classList.add('hidden');
+      document.getElementById('form-container').classList.remove('hidden');
+      document.getElementById('k3Form').onsubmit = submitK3;
+    }
+
+    async function submitK3(e) {
+      e.preventDefault();
+      const data = {
+        jenis: document.getElementById('k3_jenis').value,
+        lokasi: document.getElementById('k3_lokasi').value,
+        barang: document.getElementById('k3_barang').value,
+        deskripsi: document.getElementById('k3_deskripsi').value
+      };
+
+      if (_supabase) {
+        try {
+          await _supabase.from('k3_reports').insert([data]);
+        } catch (err) {
+          console.error("K3 cloud error:", err);
+        }
+      }
+
+      try {
+        const reports = JSON.parse(localStorage.getItem('dream_k3') || '[]');
+        reports.push({...data, timestamp: new Date().toISOString()});
+        localStorage.setItem('dream_k3', JSON.stringify(reports));
+      } catch (err) {
+        console.warn("Local K3 save failed");
+      }
+
+      const msg = `*LAPORAN K3 - SIF AL FIKRI*
+بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+
+❗ *Jenis:* ${data.jenis}
+📍 *Lokasi:* ${data.lokasi}
+🔧 *Barang:* ${data.barang || '–'}
+📝 *Deskripsi:* ${data.deskripsi}
+
+_— Dream OS v4.4_`;
+      
+      window.open(`https://wa.me/${WA_PAK_ERWIN}?text=${encodeURIComponent(msg)}`, '_blank');
+      
+      showToast("✅ Laporan K3 terkirim!");
+      showMainMenu();
+    }
+
+    // ========== ADMIN & BACKUP ==========
+    function showAdminPanel() {
+      const pass = prompt("Masukkan password admin:");
+      if (pass !== "alfikri2025") {
+        showToast("❌ Password salah!");
+        return;
+      }
+
+      let totalBooking = 0, totalK3 = 0;
+      if (_supabase) {
+        _supabase.from('bookings').select('id', { count: 'exact' }).then(res => {
+          totalBooking = res.count || 0;
+        });
+        _supabase.from('k3_reports').select('id', { count: 'exact' }).then(res => {
+          totalK3 = res.count || 0;
+        });
+      }
+
+      const html = `
+        <div class="card">
+          <h2>🔐 Dashboard Admin</h2>
+          <p><strong>📊 Statistik:</strong></p>
+          <ul>
+            <li>Booking: <span id="stat-booking">...</span></li>
+            <li>Laporan K3: <span id="stat-k3">...</span></li>
+          </ul>
+          <button class="btn" onclick="backupData()">💾 Backup Data</button>
+          <button class="btn btn-secondary" onclick="showMainMenu()">Kembali</button>
+        </div>
+      `;
+      document.getElementById('form-container').innerHTML = html;
+      document.getElementById('menu-grid').classList.add('hidden');
+      document.getElementById('form-container').classList.remove('hidden');
+
+      setTimeout(() => {
+        document.getElementById('stat-booking').innerText = totalBooking;
+        document.getElementById('stat-k3').innerText = totalK3;
+      }, 800);
+    }
+
+    function backupData() {
+      const bookings = localStorage.getItem('dream_bookings') || '[]';
+      const k3 = localStorage.getItem('dream_k3') || '[]';
+      const data = {
+        bookings: JSON.parse(bookings),
+        k3_reports: JSON.parse(k3),
+        backup_at: new Date().toISOString()
+      };
+      
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `dreamos-backup-${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("✅ Backup berhasil!");
+    }
+
+    // ========== ONLINE/OFFLINE ==========
+    window.addEventListener('online', () => {
+      document.getElementById('sync-status').innerText = "🟢 CLOUD ACTIVE";
+      _supabase = supabase.createClient(SB_URL, SB_KEY);
+    });
+    window.addEventListener('offline', () => {
+      document.getElementById('sync-status').innerText = "🔴 OFFLINE MODE";
+      _supabase = null;
+    });
+  </script>
+</body>
+</html>
