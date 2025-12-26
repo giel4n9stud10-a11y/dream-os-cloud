@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>🌿 Dream OS v4.3.4 | SIF Al Fikri</title>
+  
+  <meta name="theme-color" content="#4CAF50">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="System Administrasi SIF Al Fikri - General Affairs">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    /* ========== HEALING GREEN PREMIUM PALETTE ========== */
+    :root {
+      --bg-main: #F8FCF6;
+      --bg-card: #EAF7ED;
+      --accent: #4CAF50;
+      --accent-hover: #45A049;
+      --text-dark: #2E7D32;
+      --border-soft: #C8E6C9;
+      --shadow-soft: rgba(0,0,0,0.05);
+      --shadow-hover: rgba(0,0,0,0.08);
+      --id-red-light: #FFE8E8;
+      --ps-green-light: #E8F5E8;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg-main);
+      color: var(--text-dark);
+      line-height: 1.6;
+      padding: 16px;
+      min-height: 100vh;
+      font-size: 16px;
+    }
+
+    .container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+
+    .header-gradient {
+      background: linear-gradient(135deg, #EAF7ED 0%, #F8FCF6 100%);
+      padding: 24px 20px;
+      border-radius: 20px;
+      text-align: center;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 4px 12px var(--shadow-soft);
+    }
+
+    .arabic-large { font-size: 1.5rem; color: var(--text-dark); direction: rtl; margin: 4px 0; font-weight: bold; opacity: 0.8; }
+    .title-main { font-size: 1.8rem; color: var(--text-dark); margin: 8px 0; font-weight: 700; }
+    .subtitle { color: #666; font-size: 0.9rem; }
+
+    .badge-container { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 15px; }
+    .badge { padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; background: white; border: 1px solid var(--border-soft); }
+    .badge.online { color: #4CAF50; }
+
+    /* FEATURE GRID */
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+    .feature-card {
+      background: var(--bg-card);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 4px 12px var(--shadow-soft);
+      transition: 0.3s;
+      border: 1px solid var(--border-soft);
+      cursor: pointer;
+    }
+    .feature-card:hover { transform: translateY(-3px); }
+    .feature-icon { font-size: 2.2rem; margin-bottom: 10px; text-align: center; }
+    .feature-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; text-align: center; }
+    .feature-desc { font-size: 0.85rem; color: #555; margin-bottom: 10px; text-align: center; }
+
+    /* CARD & FORMS */
+    .card { background: white; border-radius: 18px; padding: 20px; border: 1px solid var(--border-soft); box-shadow: 0 4px 12px var(--shadow-soft); }
+    .form-group { margin-bottom: 15px; }
+    .form-label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.9rem; }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; padding: 12px; border: 1.5px solid var(--border-soft); border-radius: 10px; font-size: 1rem;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px; border-radius: 12px; font-weight: 600; border: none; cursor: pointer; transition: 0.3s; width: 100%;
+    }
+    .btn-primary { background: var(--accent); color: white; margin-top: 10px; }
+    .btn-secondary { background: #f0f0f0; color: #444; margin-top: 10px; }
+
+    /* UTILS */
+    .hidden { display: none !important; }
+    #toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: #333; color: white; padding: 10px 20px; border-radius: 30px; z-index: 9999; display: none; font-size: 0.9rem;
+    }
+    .img-preview { width: 100%; border-radius: 10px; margin-top: 10px; display: none; border: 1px solid #ddd; }
+  </style>
+</head>
+<body>
+
+  <div id="toast"></div>
+
+  <div class="container" id="main-container">
+    <div class="header-gradient" id="main-header">
+      <div class="arabic-large">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+      <h1 class="title-main">🌿 Dream OS v4.3.4</h1>
+      <div class="subtitle">SIF Al Fikri • General Affairs System</div>
+      <div class="badge-container">
+        <div id="sync-status" class="badge online">🟢 CLOUD ACTIVE</div>
+        <div class="badge">📡 VERSION 4.3.4</div>
+      </div>
+    </div>
+
+    <div id="menu-grid" class="feature-grid">
+      <div class="feature-card" onclick="switchView('booking')" style="border-left: 5px solid #D32F2F;">
+        <div class="feature-icon">📅</div>
+        <h3 class="feature-title">Form Booking</h3>
+        <p class="feature-desc">Reservasi 19 sarana sekolah (Aula, Labkom, Lapangan, dll).</p>
+      </div>
+
+      <div class="feature-card" onclick="switchView('k3')" style="border-left: 5px solid #4CAF50;">
+        <div class="feature-icon">⚠️</div>
+        <h3 class="feature-title">Laporan K3</h3>
+        <p class="feature-desc">Lapor kerusakan atau insiden dengan bukti foto kamera.</p>
+      </div>
+
+      <div class="feature-card" onclick="switchView('admin')" style="border-left: 5px solid #212121;">
+        <div class="feature-icon">🔐</div>
+        <h3 class="feature-title">Admin</h3>
+        <p class="feature-desc">Data manajemen & Export CSV untuk Teknisi.</p>
+      </div>
+    </div>
+
+    <div id="slot-booking" class="hidden"></div>
+    <div id="slot-k3" class="hidden"></div>
+    <div id="slot-admin" class="hidden"></div>
+    <div id="slot-admin-dashboard" class="hidden"></div>
+
+    <div id="main-footer" class="text-center" style="text-align:center; padding: 20px; font-size: 0.8rem; color: #888;">
+      Dream Team • The Power Soul of Shalawat<br>
+      © 2025 SIF Al Fikri • 🇮🇩🇵🇸
+    </div>
+  </div>
+
+  <template id="partial-booking">
+    <div class="card">
+      <h2 style="margin-bottom:15px">📅 Booking Sarana</h2>
+      <form id="bookingForm" onsubmit="event.preventDefault(); handleBooking();">
+        <div class="form-group">
+          <label class="form-label">Nama Pengguna *</label>
+          <input type="text" id="b_nama" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Divisi *</label>
+          <select id="b_divisi" class="form-select" required>
+            <option value="SD">SD</option><option value="SMP">SMP</option><option value="SMA">SMA</option><option value="UMUM">UMUM</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Sarana *</label>
+          <select id="b_sarana" class="form-select" required>
+            <option value="Aula SMP">Aula SMP</option>
+            <option value="Aula SMA">Aula SMA</option>
+            <option value="Labkom">Laboratorium Komputer</option>
+            <option value="Lapangan">Lapangan Olahraga</option>
+            <option value="Masjid">Masjid Baitul Hikmah</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tanggal *</label>
+          <input type="date" id="b_tgl" class="form-input" required>
+        </div>
+        <div class="form-group" style="display:flex; gap:10px">
+          <div style="flex:1">
+            <label class="form-label">Mulai</label>
+            <input type="time" id="b_mulai" class="form-input" value="07:30">
+          </div>
+          <div style="flex:1">
+            <label class="form-label">Selesai</label>
+            <input type="time" id="b_selesai" class="form-input" value="16:00">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Kirim & Sync Cloud</button>
+        <button type="button" class="btn btn-secondary" onclick="switchView('main')">Batal</button>
+      </form>
+    </div>
+  </template>
+
+  <template id="partial-k3">
+    <div class="card">
+      <h2 style="margin-bottom:15px">⚠️ Laporan K3</h2>
+      <form id="k3Form" onsubmit="event.preventDefault(); handleK3();">
+        <div class="form-group">
+          <label class="form-label">Lokasi Kejadian *</label>
+          <input type="text" id="k_lokasi" class="form-input" placeholder="Contoh: Kelas 4B" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Detail Masalah *</label>
+          <textarea id="k_masalah" class="form-textarea" required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Foto Bukti</label>
+          <input type="file" id="k_foto" class="form-input" accept="image/*" capture="environment" onchange="previewK3(this)">
+          <img id="k_preview" class="img-preview">
+        </div>
+        <button type="submit" class="btn btn-primary">Kirim Laporan</button>
+        <button type="button" class="btn btn-secondary" onclick="switchView('main')">Batal</button>
+      </form>
+    </div>
+  </template>
+
+  <template id="partial-admin">
+    <div class="card">
+      <h2>🔐 Admin Login</h2>
+      <input type="password" id="admin_pass" class="form-input" placeholder="Masukkan Password" style="margin: 15px 0">
+      <button class="btn btn-primary" onclick="checkAdmin()">Masuk</button>
+      <button class="btn btn-secondary" onclick="switchView('main')">Kembali</button>
+    </div>
+  </template>
+
+  <script>
+    // ========== CONFIGURASI ==========
+    const CONFIG = {
+      WA_ERWIN: "628886183954",
+      SB_URL: "https://mugrsslvjaisdcexbybg.supabase.co",
+      SB_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11Z3Jzc2x2amFpc2RjZXhieWJnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0MTMxMjAsImV4cCI6MjA4MTk4OTEyMH0.l2IszYilO0XgG7ut3HYAx6wCChsvJBj6FFlizngVoek"
+    };
+
+    // Inisialisasi Supabase
+    const _supabase = supabase.createClient(CONFIG.SB_URL, CONFIG.SB_KEY);
+
+    // ========== CORE ENGINE ==========
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.innerText = msg;
+      t.style.display = 'block';
+      setTimeout(() => t.style.display = 'none', 3000);
+    }
+
+    function switchView(view) {
+      const slots = ['slot-booking', 'slot-k3', 'slot-admin', 'slot-admin-dashboard'];
+      const menuGrid = document.getElementById('menu-grid');
+      
+      slots.forEach(s => document.getElementById(s).classList.add('hidden'));
+      
+      if (view === 'main') {
+        menuGrid.classList.remove('hidden');
+        return;
+      }
+
+      menuGrid.classList.add('hidden');
+      const targetSlot = document.getElementById(`slot-${view}`);
+      const temp = document.getElementById(`partial-${view}`);
+      
+      if (temp && targetSlot) {
+        targetSlot.innerHTML = '';
+        targetSlot.appendChild(temp.content.cloneNode(true));
+        targetSlot.classList.remove('hidden');
+      }
+    }
+
+    // ========== BOOKING ==========
+    async function handleBooking() {
+      const data = {
+        nama: document.getElementById('b_nama').value,
+        divisi: document.getElementById('b_divisi').value,
+        sarana: document.getElementById('b_sarana').value,
+        tanggal: document.getElementById('b_tgl').value,
+        mulai: document.getElementById('b_mulai').value,
+        selesai: document.getElementById('b_selesai').value,
+        created_at: new Date().toISOString()
+      };
+
+      const msg = `*BOOKING SIF AL FIKRI*\nNama: ${data.nama}\nDivisi: ${data.divisi}\nSarana: ${data.sarana}\nTanggal: ${data.tanggal}\nWaktu: ${data.mulai} - ${data.selesai}`;
+      window.location.href = `https://wa.me/${CONFIG.WA_ERWIN}?text=${encodeURIComponent(msg)}`;
+
+      try {
+        await _supabase.from('bookings').insert([data]);
+        showToast("✅ Booking tersimpan & notifikasi WhatsApp dikirim!");
+      } catch (err) {
+        console.error(err);
+        showToast("⚠️ Booking terkirim via WA, tapi gagal simpan ke cloud.");
+      }
+      
+      setTimeout(() => switchView('main'), 2000);
+    }
+
+    // ========== K3 ==========
+    function previewK3(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const img = document.getElementById('k_preview');
+          img.src = e.target.result;
+          img.style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    async function handleK3() {
+      const lokasi = document.getElementById('k_lokasi').value;
+      const masalah = document.getElementById('k_masalah').value;
+      const fileInput = document.getElementById('k_foto');
+      
+      showToast("📤 Mengirim laporan K3…");
+
+      try {
+        let fotoUrl = null;
+        
+        if (fileInput.files[0]) {
+          const file = fileInput.files[0];
+          const fileName = `k3_${Date.now()}_${file.name}`;
+          
+          const { error: uploadError } = await _supabase.storage
+            .from('k3-reports')
+            .upload(fileName, file, { upsert: false });
+          
+          if (uploadError) throw uploadError;
+          
+          const { data } = _supabase.storage.from('k3-reports').getPublicUrl(fileName);
+          fotoUrl = data.publicUrl;
+        }
+
+        await _supabase.from('k3_reports').insert({
+          lokasi,
+          masalah,
+          foto_url: fotoUrl,
+          created_at: new Date().toISOString()
+        });
+
+        showToast("✅ Laporan K3 berhasil tersimpan!");
+        setTimeout(() => switchView('main'), 1500);
+      } catch (err) {
+        console.error(err);
+        showToast("❌ Gagal simpan laporan: " + (err.message || "Cek koneksi & izin bucket"));
+      }
+    }
+
+    // ========== ADMIN (placeholder) ==========
+    function checkAdmin() {
+      const pass = document.getElementById('admin_pass').value;
+      if (pass === "dreamteam2025") {
+        showToast("✅ Login Berhasil!");
+        setTimeout(() => switchView('main'), 1000);
+      } else {
+        showToast("❌ Password salah!");
+      }
+    }
+
+    // Cek koneksi awal
+    document.addEventListener('DOMContentLoaded', () => {
+      // Tes koneksi ringan
+      _supabase.from('bookings').select('id', { count: 'exact', limit: 1 })
+        .then(() => {
+          document.getElementById('sync-status').innerText = "🟢 CLOUD ACTIVE";
+        })
+        .catch(() => {
+          document.getElementById('sync-status').innerText = "🟠 CLOUD LIMITED";
+          document.getElementById('sync-status').className = "badge";
+        });
+    });
+  </script>
+</body>
+</html>
